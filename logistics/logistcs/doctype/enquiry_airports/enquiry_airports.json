@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-13 11:18:44.077988",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "airport_of_loading",
+  "airport_of_discharge"
+ ],
+ "fields": [
+  {
+   "fieldname": "airport_of_loading",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Airport of Loading",
+   "options": "AOL and AOD"
+  },
+  {
+   "fieldname": "airport_of_discharge",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Airport of Discharge",
+   "options": "AOL and AOD"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-05-13 11:30:27.813183",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Enquiry Airports",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

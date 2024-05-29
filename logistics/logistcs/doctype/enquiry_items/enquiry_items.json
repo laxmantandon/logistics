@@ -1,0 +1,134 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-13 11:27:47.989768",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "commodity",
+  "cargo_type",
+  "cargo_dg_array",
+  "coolant_type",
+  "no_of_packages",
+  "packing_type",
+  "no_of_containers",
+  "container_type",
+  "gross_weight",
+  "net_weight",
+  "dimensions_in",
+  "length",
+  "breadth",
+  "height",
+  "volume",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "commodity",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Commodity"
+  },
+  {
+   "fieldname": "cargo_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Cargo Type",
+   "options": "General\nDG\nReefer"
+  },
+  {
+   "fieldname": "coolant_type",
+   "fieldtype": "Data",
+   "label": "Coolant Type"
+  },
+  {
+   "fieldname": "no_of_packages",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "No of Packages"
+  },
+  {
+   "fieldname": "packing_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Packing Type",
+   "options": "Packing Type"
+  },
+  {
+   "fieldname": "no_of_containers",
+   "fieldtype": "Data",
+   "label": "No of Containers"
+  },
+  {
+   "fieldname": "container_type",
+   "fieldtype": "Link",
+   "label": "Container Type",
+   "options": "Container Type"
+  },
+  {
+   "fieldname": "gross_weight",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Gross Weight"
+  },
+  {
+   "fieldname": "net_weight",
+   "fieldtype": "Float",
+   "label": "Net Weight"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Length"
+  },
+  {
+   "fieldname": "breadth",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Breadth"
+  },
+  {
+   "fieldname": "height",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Height"
+  },
+  {
+   "fieldname": "volume",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Volume"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "cargo_dg_array",
+   "fieldtype": "JSON",
+   "label": "Cargo DG Array"
+  },
+  {
+   "fieldname": "dimensions_in",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dimensions In",
+   "options": "\nInches (In)\nCentimeters (cm)\nMilimeters (mm)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-05-29 12:46:55.843147",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Enquiry Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

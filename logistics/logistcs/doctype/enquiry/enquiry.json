@@ -1,0 +1,435 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-13 11:20:33.027964",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_zhazz",
+  "service_request",
+  "column_break_rejca",
+  "service_code",
+  "section_break_vdhti",
+  "posting_date",
+  "column_break_ge42p",
+  "posting_time",
+  "column_break_btrjt",
+  "response_date",
+  "column_break_1yoli",
+  "response_time",
+  "section_break_i2sv2",
+  "nature_of_shipment",
+  "column_break_njjby",
+  "mode_of_transport",
+  "section_break_tmz1v",
+  "place_of_receipt",
+  "column_break_plrf1",
+  "incoterm",
+  "section_break_n1wkx",
+  "ports",
+  "airports",
+  "section_break_fuaoz",
+  "delivery_location",
+  "column_break_efof9",
+  "delivery_zipcode",
+  "column_break_x8hr1",
+  "delivery_address",
+  "column_break_y6vet",
+  "delivery_contact",
+  "section_break_zgd1o",
+  "pickup_location",
+  "column_break_g7krz",
+  "pickup_zipcode",
+  "column_break_zgcaq",
+  "pickup_address",
+  "column_break_k5qzn",
+  "pickup_contact",
+  "section_break_6maom",
+  "invoice_value",
+  "column_break_j8xms",
+  "invoice_currency",
+  "hs_code",
+  "section_break_feqpk",
+  "shipper_category",
+  "column_break_glskl",
+  "ad_code",
+  "section_break_nr933",
+  "items",
+  "section_break_b0pya",
+  "organization_name",
+  "column_break_drdmg",
+  "full_name",
+  "column_break_io60v",
+  "job_title",
+  "section_break_j6cid",
+  "mobile_no",
+  "column_break_fk3uc",
+  "whatsapp_no",
+  "column_break_t5k3q",
+  "email",
+  "column_break_3hzm3",
+  "city",
+  "section_break_gxmqj",
+  "amended_from",
+  "additional_info_tab",
+  "agent"
+ ],
+ "fields": [
+  {
+   "fieldname": "place_of_receipt",
+   "fieldtype": "Data",
+   "label": "Place of Receipt"
+  },
+  {
+   "fieldname": "incoterm",
+   "fieldtype": "Link",
+   "label": "Incoterm",
+   "options": "Incoterm"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport !== 'Air'",
+   "fieldname": "ports",
+   "fieldtype": "Table",
+   "label": "Ports",
+   "options": "Enquiry Ports"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport == 'Air'",
+   "fieldname": "airports",
+   "fieldtype": "Table",
+   "label": "Airports",
+   "options": "Enquiry Airports"
+  },
+  {
+   "fieldname": "delivery_location",
+   "fieldtype": "Data",
+   "label": "Delivery Location"
+  },
+  {
+   "fieldname": "pickup_location",
+   "fieldtype": "Data",
+   "label": "Pickup Location"
+  },
+  {
+   "fieldname": "invoice_value",
+   "fieldtype": "Float",
+   "label": "Invoice Value"
+  },
+  {
+   "fieldname": "hs_code",
+   "fieldtype": "Data",
+   "label": "HS Code"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Enquiry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Enquiry Items"
+  },
+  {
+   "fieldname": "section_break_tmz1v",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_plrf1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_n1wkx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_fuaoz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_y6vet",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zgd1o",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_j8xms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_nr933",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_b0pya",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "organization_name",
+   "fieldtype": "Data",
+   "label": "Organization Name"
+  },
+  {
+   "fieldname": "column_break_drdmg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name"
+  },
+  {
+   "fieldname": "column_break_io60v",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "label": "Job Title"
+  },
+  {
+   "fieldname": "section_break_j6cid",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile No"
+  },
+  {
+   "fieldname": "column_break_fk3uc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "whatsapp_no",
+   "fieldtype": "Data",
+   "label": "Whatsapp No"
+  },
+  {
+   "fieldname": "column_break_t5k3q",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "column_break_3hzm3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "section_break_gxmqj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_vdhti",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "default": "Now",
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time"
+  },
+  {
+   "fieldname": "column_break_ge42p",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "response_date",
+   "fieldtype": "Date",
+   "label": "Response Date"
+  },
+  {
+   "fieldname": "response_time",
+   "fieldtype": "Time",
+   "label": "Response Time"
+  },
+  {
+   "fieldname": "section_break_i2sv2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "nature_of_shipment",
+   "fieldtype": "Select",
+   "label": "Nature of Shipment",
+   "options": "\nImport\nExport"
+  },
+  {
+   "fieldname": "column_break_njjby",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mode_of_transport",
+   "fieldtype": "Select",
+   "label": "Mode of Transport",
+   "options": "\nAir\nSea FCL\nSea LCL"
+  },
+  {
+   "fieldname": "column_break_btrjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_1yoli",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_feqpk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "shipper_category",
+   "fieldtype": "Select",
+   "label": "Shipper Category"
+  },
+  {
+   "fieldname": "column_break_glskl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ad_code",
+   "fieldtype": "Data",
+   "label": "AD Code"
+  },
+  {
+   "fieldname": "section_break_zhazz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "service_request",
+   "fieldtype": "Link",
+   "label": "Service Request",
+   "options": "Service Request"
+  },
+  {
+   "fieldname": "column_break_rejca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "service_request.service_code",
+   "fieldname": "service_code",
+   "fieldtype": "Data",
+   "label": "Service Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_efof9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_zipcode",
+   "fieldtype": "Data",
+   "label": "Delivery Zipcode"
+  },
+  {
+   "fieldname": "column_break_x8hr1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_address",
+   "fieldtype": "Data",
+   "label": "Delivery Address"
+  },
+  {
+   "fieldname": "delivery_contact",
+   "fieldtype": "Data",
+   "label": "Delivery Contact"
+  },
+  {
+   "fieldname": "column_break_g7krz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pickup_zipcode",
+   "fieldtype": "Data",
+   "label": "Pickup Zipcode"
+  },
+  {
+   "fieldname": "column_break_zgcaq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pickup_address",
+   "fieldtype": "Data",
+   "label": "Pickup Address"
+  },
+  {
+   "fieldname": "column_break_k5qzn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pickup_contact",
+   "fieldtype": "Data",
+   "label": "Pickup Contact"
+  },
+  {
+   "fieldname": "section_break_6maom",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "additional_info_tab",
+   "fieldtype": "Tab Break",
+   "label": "Additional Info"
+  },
+  {
+   "fieldname": "agent",
+   "fieldtype": "Link",
+   "label": "Agent",
+   "options": "Network Agent"
+  },
+  {
+   "fieldname": "invoice_currency",
+   "fieldtype": "Link",
+   "label": "Invoice Currency",
+   "options": "Currency"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-05-29 13:04:56.683840",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Enquiry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

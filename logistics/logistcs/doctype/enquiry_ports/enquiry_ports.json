@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-13 11:18:01.701439",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "port_of_loading",
+  "port_of_discharge"
+ ],
+ "fields": [
+  {
+   "fieldname": "port_of_loading",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Port of Loading",
+   "options": "POL and POD"
+  },
+  {
+   "fieldname": "port_of_discharge",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Port of Discharge",
+   "options": "POL and POD"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-05-13 11:30:45.052569",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Enquiry Ports",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
