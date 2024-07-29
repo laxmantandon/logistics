@@ -446,7 +446,7 @@
 
                 <div class="flex flex-row">
 
-                    <div class="p-2 w-1/4" v-if="shipment.mode_of_transport.value.includes('Sea')">
+                    <div class="p-2 w-1/4" v-if="shipment.mode_of_transport.value.includes('Sea FCL')">
                         <label class="block text-xs text-gray-900 pb-1">No of Containers</label>
                         <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle" placeholder="0"
                             :disabled="false" label="No of Containers" v-model="item.no_of_containers"
@@ -812,7 +812,7 @@ function get_enquiry(id) {
                     if (i.cargo_dg_array) {
                         cargo_dg_array = JSON.parse(i.cargo_dg_array)
                     }
-                    console.log('eeeeee', i)
+                    // console.log('eeeeee', i)
                     line_items.value.push({
                         "commodity" : i.commodity,
                         "cargo_type" : i.cargo_type,
@@ -915,7 +915,7 @@ function append_items_array() {
 }
 
 function remove_cargo_dg_array(index, dg_index) {
-    console.log(index, dg_index)
+    // console.log(index, dg_index)
     this.line_items[index].cargo_dg_array.splice(dg_index, 1)
 }
 
@@ -949,7 +949,7 @@ function append_airports_array() {
 
 function calculate_volume() {
     this.line_items.forEach((item, index) => {
-        console.log('item', item)
+        // console.log('item', item)
         if (this.shipment.mode_of_transport == 'Air') {
             if (item.dimensions_in == 'Inches (In)') {
                 let cal_inches = ((item.length * item.breadth * item.height) / 366) * item.no_of_packages;
@@ -1059,7 +1059,7 @@ let enquiry = createResource({
 // })
 
 function get_carrier_caption(mode_of_transport) {
-    console.log(mode_of_transport)
+    // console.log(mode_of_transport)
     if (mode_of_transport === 'Air') {
         return 'Airlines Name'
     }
