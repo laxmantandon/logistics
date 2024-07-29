@@ -636,7 +636,7 @@ const deliery_type_list = ref([{ "value": "Cargo Delivery", "label": "Cargo Deli
 
 const shipment = ref(
     {
-        service_request: {value: "", name: ""},
+        "service_request": {value: "", name: ""},
         "nature_of_shipment": {"value": "", "name": ""},
         "mode_of_transport": {"value": "", "name": ""},
         "place_of_receipt": "",
