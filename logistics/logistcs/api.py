@@ -7,15 +7,15 @@ def get_masters_data():
     """, as_dict=True)
 
     airports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabAOL and AOD`
+        SELECT name as value, name as label from `tabAOL and AOD` LIMIT 10
     """, as_dict=True)
 
     domestic_airports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabAOL and AOD` WHERE is_domestic = 1
+        SELECT name as value, name as label from `tabAOL and AOD` WHERE is_domestic = 1 LIMIT 10
     """, as_dict=True)
 
     ports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabPOL and POD`
+        SELECT name as value, name as label from `tabPOL and POD` LIMIT 10
     """, as_dict=True)
 
     packing_types = frappe.db.sql("""
@@ -35,7 +35,7 @@ def get_masters_data():
     """, as_dict=True)
 
     container_freight_stations = frappe.db.sql("""
-        SELECT name as value, name as label from `tabContainer Freight Station`
+        SELECT name as value, name as label from `tabContainer Freight Station` LIMIT 10
     """, as_dict=True)
 
     currencies = frappe.db.sql("""
