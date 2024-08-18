@@ -7,15 +7,15 @@ def get_masters_data():
     """, as_dict=True)
 
     airports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabAOL and AOD` LIMIT 10
+        SELECT name as value, name as label from `tabAOL and AOD` 
     """, as_dict=True)
 
     domestic_airports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabAOL and AOD` WHERE is_domestic = 1 LIMIT 10
+        SELECT name as value, name as label from `tabAOL and AOD` WHERE is_domestic = 1 
     """, as_dict=True)
 
     ports = frappe.db.sql("""
-        SELECT name as value, name as label from `tabPOL and POD` LIMIT 10
+        SELECT name as value, name as label from `tabPOL and POD` 
     """, as_dict=True)
 
     packing_types = frappe.db.sql("""
@@ -35,7 +35,7 @@ def get_masters_data():
     """, as_dict=True)
 
     container_freight_stations = frappe.db.sql("""
-        SELECT name as value, name as label from `tabContainer Freight Station` LIMIT 10
+        SELECT name as value, name as label from `tabContainer Freight Station` 
     """, as_dict=True)
 
     currencies = frappe.db.sql("""
@@ -70,6 +70,13 @@ def get_masters_data():
     }
 
 @frappe.whitelist()
+def get_port_of_loading(port):
+   ports = frappe.db.sql(f"""
+        SELECT name as value, name as label from `tabPOL and POD` WHERE name like '%{port}%' LIMIT 10
+    """, as_dict=True)
+
+
+@frappe.whitelist()
 def get_enquiry_list():
 
     enquiries = frappe.db.sql("""
@@ -80,13 +87,13 @@ def get_enquiry_list():
     """, (frappe.session.user), as_dict=True)
 
     headers = [
-        { "text": "Ref #", "value": "name" },
-        { "text": "Service Request", "value": "service_request" },
-        { "text": "Nature of Shipment", "value": "nature_of_shipment" },
-        { "text": "Mode of Transport", "value": "mode_of_transport" },
-        { "text": "Date", "value": "posting_date" },
-        { "text": "Time", "value": "posting_time" },
-        { "text": "Action", "value": "action" }
+        { "title": "Ref #", "value": "name" },
+        { "title": "Service Request", "value": "service_request" },
+        { "title": "Nature of Shipment", "value": "nature_of_shipment" },
+        { "title": "Mode of Transport", "value": "mode_of_transport" },
+        { "title": "Date", "value": "posting_date" },
+        { "title": "Time", "value": "posting_time" },
+        { "title": "Actions", "value": "actions" }
     ]
 
     return {
@@ -104,21 +111,21 @@ def submit_enquiry():
     # # for r in req.get("shipment").get("airports"):
     enquiry = frappe.new_doc("Enquiry")
 
-    enquiry.service_request = req.get("shipment").get("service_request").get("label")
-    enquiry.nature_of_shipment = req.get("shipment").get("nature_of_shipment").get("value")
-    enquiry.mode_of_transport = req.get("shipment").get("mode_of_transport").get("value")
+    enquiry.service_request = req.get("shipment").get("service_request")
+    enquiry.nature_of_shipment = req.get("shipment").get("nature_of_shipment")
+    enquiry.mode_of_transport = req.get("shipment").get("mode_of_transport")
 
     if enquiry.mode_of_transport == 'Sea FCL' or enquiry.mode_of_transport == 'Sea LCL':
         for s in req.get("shipment").get("ports"):
-            enquiry.append("ports", {"port_of_loading": s.get("port_of_loading").get("value"), "port_of_discharge": s.get("port_of_discharge").get("value")})
+            enquiry.append("ports", {"port_of_loading": s.get("port_of_loading"), "port_of_discharge": s.get("port_of_discharge")})
 
     if enquiry.mode_of_transport == 'Air':
         for s in req.get("shipment").get("airports"):
-            enquiry.append("airports", {"airport_of_loading": s.get("port_of_loading").get("value"), "airport_of_discharge": s.get("port_of_discharge").get("value")})
+            enquiry.append("airports", {"airport_of_loading": s.get("port_of_loading"), "airport_of_discharge": s.get("port_of_discharge")})
 
     enquiry.place_of_receipt = req.get("shipment").get("place_of_receipt")
 
-    enquiry.incoterm = req.get("shipment").get("incoterm").get("value")
+    enquiry.incoterm = req.get("shipment").get("incoterm")
 
     enquiry.shipper_location = req.get("shipment").get("shipper_location")
     
@@ -129,11 +136,11 @@ def submit_enquiry():
     enquiry.pickup_zipcode = req.get("shipment").get("pickup_zipcode")
     enquiry.pickup_address = req.get("shipment").get("pickup_address")
     enquiry.pickup_contact = req.get("shipment").get("pickup_contact")
-    enquiry.pickup_airport = req.get("shipment").get("pickup_airport").get("value")
-    enquiry.pickup_cfs = req.get("shipment").get("pickup_cfs").get("value")
+    enquiry.pickup_airport = req.get("shipment").get("pickup_airport")
+    enquiry.pickup_cfs = req.get("shipment").get("pickup_cfs")
 
-    enquiry.delivery_airport = req.get("shipment").get("delivery_airport").get("value")
-    enquiry.delivery_cfs = req.get("shipment").get("delivery_cfs").get("value")
+    enquiry.delivery_airport = req.get("shipment").get("delivery_airport")
+    enquiry.delivery_cfs = req.get("shipment").get("delivery_cfs")
     enquiry.delivery_location = req.get("shipment").get("delivery_location")
     enquiry.delivery_zipcode = req.get("shipment").get("delivery_zipcode")
     enquiry.delivery_address = req.get("shipment").get("delivery_address")
@@ -145,7 +152,7 @@ def submit_enquiry():
 
     enquiry.hs_code = req.get("shipment").get("hs_code")
 
-    enquiry.shipper_category = req.get("shipment").get("shipper_category").get("value") if req.get("shipment").get("shipper_category") else ""
+    enquiry.shipper_category = req.get("shipment").get("shipper_category") if req.get("shipment").get("shipper_category") else ""
     enquiry.ad_code = req.get("shipment").get("ad_code")
     enquiry.carrier_name = req.get("shipment").get("carrier_name")
     enquiry.delivery_type = req.get("shipment").get("delivery_type")
@@ -170,7 +177,7 @@ def submit_enquiry():
             "height": i.get("height"),
             "volume": i.get("volume"),
             "remarks": i.get("remarks"),
-            "packing_type": i.get("packing_type").get("value"),
+            "packing_type": i.get("packing_type"),
             "coolant_type": i.get("coolant_type")
             }
         )

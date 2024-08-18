@@ -5,35 +5,42 @@ import router from './router'
 import App from './App.vue'
 
 import {
-  Button,
-  Card,
-  Input,
   setConfig,
   frappeRequest,
   resourcesPlugin,
 } from 'frappe-ui'
 
-import vue3GoogleLogin from 'vue3-google-login'
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-import Vue3EasyDataTable from 'vue3-easy-data-table';
-import 'vue3-easy-data-table/dist/style.css';
+const vuetify = createVuetify({
+  components,
+  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+  options: {
+    customProperties: true,
+  },
+})
+
 
 let app = createApp(App)
 
-app.use(vue3GoogleLogin, {
-  clientId: '239650682110-vv1jgrgaoqgg5sf3bkgh3cm8chbk3m6j.apps.googleusercontent.com'
-})
-
-app.component('EasyDataTable', Vue3EasyDataTable);
-
-
 setConfig('resourceFetcher', frappeRequest)
 
-app.use(router)
+app.use(vuetify)
 app.use(resourcesPlugin)
+app.use(router)
 
-app.component('Button', Button)
-app.component('Card', Card)
-app.component('Input', Input)
+// app.component('EasyDataTable', Vue3EasyDataTable);
 
 app.mount('#app')

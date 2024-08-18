@@ -1,72 +1,90 @@
 <template>
-  <div v-if="is_signup==false" class="h-screen flex flex-row items-center justify-center">
-    <Card title="Welcome" class="w-full max-w-md">
-      <form class="flex flex-col space-y-2 w-full" @submit.prevent="submit">
-        <Input required name="email" type="text" placeholder="johndoe@email.com" label="User ID" />
-        <Input required name="password" type="password" placeholder="••••••" label="Password" />
-        <div class="h-2"></div>
-        <Button :loading="session.login.loading" variant="solid">Login</Button>
-        <div class="h-2"></div>
 
-        <!-- <GoogleLogin :callback="callback">
-          <Button>Login with google</Button>
-          </GoogleLogin> -->
-      </form>
-      <Button @click="is_signup=true">Sign up</Button>
-    </Card>
-  </div>
-  <div v-if="is_signup==true" class="h-screen flex flex-row items-center justify-center">
-    <Card title="Signup" class="w-full max-w-md">
-      <form class="flex flex-col space-y-2 w-full" @submit.prevent="signup">
-        <Input required name="full_name" type="text" placeholder="Full Name" label="Full Name" />
-        <Input required name="email" type="text" placeholder="johndoe@email.com" label="Email ID" />
-        <Input required name="new_password" type="password" placeholder="****" label="Password" />
+<v-container fluid class="d-flex justify-center align-center fill-height">
+    <v-card variant="outlined" width="400">
+      <v-card-title class="justify-center bg-grey-lighten-1 mb-4">{{ is_signup ? 'Signup': 'Login'}}</v-card-title>
+      
+      <v-card-text v-if="is_signup==false">
+        <v-form @submit.prevent="submit">
+          <v-text-field
+            density="compact"
+            label="Email"
+            type="email"
+            name="email"
+            required
+            variant="outlined"
+          ></v-text-field>
 
-        <div class="h-2"></div>
-        <Button :loading="session.signup.loading" variant="solid">Signup</Button>
-        <div class="h-2"></div>
+          <v-text-field
+            density="compact"
+            label="Password"
+            type="password"
+            name="password"
+            required
+            variant="outlined"
+          ></v-text-field>
+          <v-btn class="mr-2" type="submit" color="primary" :loading="session.login.loading">Login</v-btn>
+          <v-btn @click="is_signup = true" variant="outlined" >Signup</v-btn>
+        </v-form>
+      </v-card-text>
+      
+      <v-card-text v-if="is_signup==true">
+        <v-form @submit.prevent="signup">
+          <v-text-field
+            density="compact"
+            label="Full Name"
+            name="full_name"
+            required
+            variant="outlined"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            label="Email"
+            type="email"
+            name="email"
+            required
+            variant="outlined"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            label="Password"
+            type="password"
+            name="new_password"
+            required
+            variant="outlined"
+          ></v-text-field>
+          <v-btn class="mr-2" type="submit" color="primary" :loading="session.signup.loading">Signup</v-btn>
+          <v-btn @click="is_signup = false" variant="outlined" >Login</v-btn>
+        </v-form>
+      </v-card-text>
 
-        <!-- <GoogleLogin :callback="callback">
-          <Button>Login with google</Button>
-        </GoogleLogin> -->
-      </form>
-      <Button @click="is_signup=false">Login</Button>
-    </Card>
-  </div>
-  <div>
-    <pre>{{ show_login_error }}</pre>
-  </div>
-  
-  <Dialog v-model="show_login_error">
-      <template #body-title>
-        <h3>{{ login_error_title }}</h3>
-      </template>
-      <template #body-content>
-        <p>{{ login_error_message }}</p>
-      </template>
-      <!-- <template #actions>
-        <Button class="ml-2" @click="show_login_error = false">Close</Button>
-      </template> -->
-    </Dialog>
+
+      <v-card-actions class="d-flex justify-space-between">
+        <v-btn text>Forgot Password?</v-btn>
+      </v-card-actions>
+    </v-card>
+    <!-- <pre>{{ show_login_error }} {{ login_error_title }}</pre> -->
+  </v-container>
+
+  <v-dialog v-model="show_login_error" max-width="500">
+    <v-card>
+      <v-card-title>Error</v-card-title>
+      <v-card-text>{{ login_error_title }}</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="show_login_error = false">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import {
-  Dialog,
-  Button,
-  Input,
-  Card
-} from 'frappe-ui'
-
 import { useRouter, useRoute } from 'vue-router'
 
 import { session } from '../data/session'
-import { decodeCredential } from 'vue3-google-login'
-
-const router = useRouter()
-const route = useRoute()
 
 const login_error_title = ref('')
 const login_error_message = ref('')
@@ -75,11 +93,25 @@ const is_signup = ref(false)
 
 function submit(e) {
   let formData = new FormData(e.target)
+  if (!formData.get('email')) {
+    login_error_title.value = "Provide Email"
+    show_login_error.value = true
+    return
+  }
+
+  if (!formData.get('password')) {
+    login_error_title.value = "Provide Password"
+    show_login_error.value = true
+    return
+  }
+
+
   session.login.submit({
     email: formData.get('email'),
     password: formData.get('password'),
   }).catch(error => {
-    login_error_title.value = 'Login Error'
+    console.log(error)
+    login_error_title.value = error.messages[0]
     login_error_message.value= error.messages[0]
     show_login_error.value = true
   })
@@ -93,7 +125,7 @@ function signup(e) {
     new_password: formData.get('new_password')
   }).then(resp => {
     if(resp.status){
-      login_error_title.value = 'Login Info'
+      login_error_title.value = 'Signup Successful'
       login_error_message.value= 'Signup Successful.'
       show_login_error.value = true      
       is_signup.value = false;
@@ -110,10 +142,14 @@ function signup(e) {
   })
 }
 
-
-function callback(response) {
-  console.log("Handle the response", response)
-  const userData = decodeCredential(response.credential)
-  console.log("Handle the userData", userData)
-}
 </script>
+<style>
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+.fill-height {
+  min-height: 70vh;
+}
+</style>

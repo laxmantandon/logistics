@@ -4,12 +4,12 @@ import { userResource } from '@/data/user'
 
 const routes = [
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('@/pages/Home.vue'),
+    path: '/',
+    name: 'Login',
+    component: () => import('@/pages/EnquiryList.vue'),
   },
   {
-    path: '/',
+    path: '/enquiry-list',
     name: 'EnquiryList',
     component: () => import('@/pages/EnquiryList.vue'),
   },
@@ -22,11 +22,6 @@ const routes = [
     path: '/enquiry/:id',
     name: 'EnquiryEdit',
     component: () => import('@/pages/Enquiry.vue'),
-  },
-  {
-    name: 'Login',
-    path: '/login',
-    component: () => import('@/pages/Login.vue'),
   },
 ]
 
@@ -42,6 +37,8 @@ router.beforeEach(async (to, from, next) => {
   } catch (error) {
     isLoggedIn = false
   }
+
+  console.log(`Navigating to: ${to.name}, isLoggedIn: ${isLoggedIn}`)
 
   if (to.name === 'Login' && isLoggedIn) {
     next({ name: 'EnquiryList' })

@@ -1,607 +1,332 @@
 <template>
-    <div class="flex justify-end p-5">
-        <router-link to="/" tag="button"><Button class="mr-2">Enquiry List</Button></router-link>
-        <Button :loading="session.logout.loading" @click="session.logout.submit()">Logout</Button>
-    </div>
-    <div class="flex flex-col items-center justify-center pt-5">
-        <!-- <div v-if="selected_enquiry_modes == false && show_company_info == false">
-            <div class="flex flex-col items-center">
-                <div><img class="h-16 w-20" src="/files/bliss_logo.jpg"></div>
-                <div>
-                    <h4 v-if="enquiry_type" class="text-2xl text-center">Title 2 ?</h4>
-                    <h4 v-if="!enquiry_type" class="text-2xl text-center">Title 1 ?</h4>
-                </div>
-                <div class="flex flex-row">
-                    <div class="items-center m-2 border-2 border-gray-400 p-10 w-40 text-center hover:border-gray-700 rounded"
-                        @click="select_enquiry_type(item.name)"
-                        v-for="(item, index) in enquiry_type ? enquiry_modes : enquiry_types">
-                        <div>
-                            <ion-icon class="text-3xl" :name="item.icon"></ion-icon>
-                        </div>
-                        {{ item.name }}
-                    </div>
-                </div>
+    <v-container>
 
-            </div>
-        </div> -->
+        <v-card class="mt-2 pl-5 pr-5 mb-2" title="Service Requirements" variant="outlined" v-if="masters.data.service_requests">
+            <v-row>
+                <v-col>
+                    <v-autocomplete
+                        label="Service Request"
+                        density="compact"
+                        :items="masters.data.service_requests"
+                        v-model="shipment.service_request"
+                        item-title="label"
+                        item-value="value"
+                        variant="outlined"></v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Nature of Shipment" density="compact"
+                        :items=masters.data.nature_of_shipments v-model="shipment.nature_of_shipment" item-title="label"
+                        item-value="value" variant="outlined">
+                    </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Mode of Transport" density="compact"
+                        :items=masters.data.mode_of_transports v-model="shipment.mode_of_transport" item-title="label"
+                        item-value="value" variant="outlined">
+                    </v-autocomplete>
+                </v-col>
+            </v-row>
+        </v-card>
 
+        <v-card class="mt-2 pl-5 pr-5 mb-2" title="Shipping Info" variant="outlined">
+            <v-row v-if="shipment.service_request !== '3'">
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Place of Receipt"
+                                v-model="shipment.place_of_receipt"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Incoterms" density="compact" :items=masters.data.incoterms
+                                v-model="shipment.incoterm" item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.mode_of_transport.includes('Sea') && (shipment.service_request == '1' || shipment.service_request == '2')" v-for="(item, index) in shipment.ports">
+                <v-col>
+                    <v-autocomplete label="Port of Loading" density="compact"
+                                    :items=masters.data.ports v-model="item.port_of_loading" item-title="label"
+                                    item-value="value" variant="outlined">
+                                </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Port of Discharge" density="compact"
+                                    :items=masters.data.ports v-model="item.port_of_discharge" item-title="label"
+                                    item-value="value" variant="outlined">
+                                </v-autocomplete>
+                </v-col>
+                <v-col cols="1">
+                    
+                    <v-btn variant="outlined" @click="append_ports_array()"><v-icon icon="mdi-plus-circle"></v-icon></v-btn>
+                </v-col>
+                <v-col cols="1">
+                    <v-btn variant="outlined" @click="remove_ports_array(index)" v-if="index > 0"><v-icon icon="mdi-minus-circle"></v-icon></v-btn>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.mode_of_transport == 'Air' && (shipment.service_request == '1' || shipment.service_request == '2')" v-for="(item, index) in shipment.airports">
+                <v-col>
+                    <v-autocomplete label="Airport of Loading" density="compact"
+                                    :items=masters.data.airports v-model="item.port_of_loading" item-title="label"
+                                    item-value="value" variant="outlined">
+                                </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Airport of Discharge" density="compact"
+                                    :items=masters.data.airports v-model="item.port_of_discharge" item-title="label"
+                                    item-value="value" variant="outlined">
+                                </v-autocomplete>
+                </v-col>
+                <v-col cols="1">
+                    <v-btn variant="outlined" @click="append_airports_array()"><v-icon icon="mdi-plus-circle"></v-icon></v-btn>
+                </v-col>
+                <v-col cols="1">
+                    <v-btn variant="outlined" @click="remove_airports_array(index)" v-if="index > 0"><v-icon icon="mdi-minus-circle"></v-icon></v-btn>
+                </v-col>
+            </v-row>
 
+            <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU') || shipment.incoterm.includes('CIF') || shipment.incoterm.includes('EXW')">
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Pickup Location"
+                                v-model="shipment.pickup_location"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Pickup Zip Code"
+                                v-model="shipment.pickup_zipcode"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Pickup Address"
+                                v-model="shipment.pickup_address"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Pickup Contact"
+                                v-model="shipment.pickup_contact"></v-text-field>
+                </v-col>
+            </v-row>
 
+            <v-row v-if="shipment.nature_of_shipment =='Export'">
+                <v-col v-if="(shipment.service_request == '3' && shipment.mode_of_transport.includes('Air'))">
+                    <v-autocomplete label="Delivery Airport" density="compact"
+                                :items=masters.data.domestic_airports v-model="shipment.delivery_airport" item-title="label"
+                                item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col v-if="(shipment.service_request == '3' && shipment.mode_of_transport.includes('Sea'))">
+                    <v-autocomplete label="Delivery CFS" density="compact"
+                                :items=masters.data.container_freight_stations v-model="shipment.delivery_cfs"
+                                item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.nature_of_shipment =='Import'">
+                <v-col cols="4" v-if="shipment.mode_of_transport.includes('Air')">
+                    <v-autocomplete label="Pickup Airport" density="compact"
+                                :items=masters.data.domestic_airports v-model="shipment.pickup_airport" item-title="label"
+                                item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col v-if="shipment.mode_of_transport.includes('Sea')">
+                    <v-autocomplete label="Pickup CFS" density="compact"
+                                :items=masters.data.container_freight_stations v-model="shipment.pickup_cfs"
+                                item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU')">
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Delivery Location"
+                                v-model="shipment.delivery_location"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Delivery Zip Code"
+                                v-model="shipment.delivery_zipcode"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Delivery Address"
+                                v-model="shipment.delivery_address"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Delivery Contact"
+                                v-model="shipment.delivery_contact"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP')">
+                <v-col>
+                    <v-autocomplete label="Currency" density="compact" :items=masters.data.currencies
+                                v-model="shipment.invoice_currency" item-title="label" item-value="value"
+                                variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Invoice Value"
+                                v-model="shipment.invoice_value"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="HS Code"
+                                v-model="shipment.hs_code"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-autocomplete
+                                :label="shipment.nature_of_shipment == 'Export' ? 'Shipper Category': 'Consignee Category'"
+                                density="compact" :items=masters.data.shipper_categories
+                                v-model="shipment.shipper_category" item-title="label" item-value="value"
+                                variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col v-if="shipment.nature_of_shipment == 'Export'">
+                    <v-text-field variant="outlined" density="compact" label="AD Code"
+                                v-model="shipment.ad_code"></v-text-field>
+                </v-col>
+                <v-col v-if="shipment.nature_of_shipment == 'Import'">
+                    <v-autocomplete label="Type of Clearance" density="compact"
+                                :items=masters.data.types_of_clearance v-model="shipment.type_of_clearance"
+                                item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col v-if="shipment.nature_of_shipment == 'Import'">
+                    <v-text-field variant="outlined" density="compact"
+                                :label="get_carrier_caption(shipment.mode_of_transport)"
+                                v-model="shipment.carrier_name"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row v-if="shipment.service_request == '2' && shipment.nature_of_shipment == 'Import'">
+                <v-col>
+                    <v-date-input variant="outlined" density="compact" label="Carrier Departure Date"
+                                v-model="shipment.carrier_departure_date"></v-date-input>
+                </v-col>
+                <v-col>
+                    <v-date-input variant="outlined" density="compact" label="Carrier Arrival Date"
+                                v-model="shipment.carrier_arrival_date"></v-date-input>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Delivery Type" density="compact" :items=deliery_type_list
+                                v-model="shipment.delivery_type" item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
+        </v-card>
 
-        <div class="mb-10 ">
+        <v-card class="mt-2 pl-5 pr-5 mb-2" title="Cargo Details" :subtitle="'# '+ (index+1)" variant="outlined" v-for="(item, index) in line_items">
+            <v-row>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Commodity"
+                                v-model="item.commodity"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Cargo Type" density="compact" :items=cargo_type_list
+                                v-model="item.cargo_type" item-title="label" item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
+            <v-row v-if="item.cargo_type == 'DG'" v-for="(item, dg_index) in item.cargo_dg_array">
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="IMO Classification"
+                                v-model="item.imo_classification"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="UN Number"
+                                v-model="item.un_number"></v-text-field>
+                </v-col>
+                <v-col cols="1">
+                    <v-btn variant="outlined" @click="append_cargo_dg_array(index)"><v-icon icon="mdi-plus-circle"></v-icon></v-btn>
+                </v-col>
+                <v-col cols="1">
+                    <v-btn variant="outlined" @click="remove_cargo_dg_array(index, dg_index)" v-if="dg_index > 0"><v-icon icon="mdi-minus-circle"></v-icon></v-btn>
+                </v-col>
+            </v-row>
+            <v-row v-if="item.cargo_type == 'Reefer'">
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Coolant Type"
+                                v-model="item.coolant_type"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="No of Packages" type="number"
+                                v-model="item.no_of_packages" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-autocomplete label="Packing Type" density="compact"
+                                :items=masters.data.packing_types v-model="item.packing_type" item-title="label"
+                                item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+            </v-row>
 
-            <div class="p-2 bg-gray-900 text-white"><b>Service Requirement</b></div>
+            <v-row>
+                <v-col v-if="shipment.mode_of_transport.includes('Sea FCL')">
+                    <v-text-field variant="outlined" density="compact" label="No of Container"
+                                v-model="item.no_of_containers" type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col v-if="shipment.mode_of_transport === 'Sea FCL'">
+                    <v-autocomplete label="Containter Type" density="compact"
+                                :items=masters.data.container_types v-model="item.container_type" item-title="label"
+                                item-value="value" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Gross Weight"
+                                v-model="item.gross_weight" type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Net Weight" v-model="item.net_weight"
+                                type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-autocomplete label="Dimension In" density="compact" :items=dimensions_in_list
+                                v-model="item.dimensions_in" item-title="label" item-value="value"
+                                @change="calculate_volume()" variant="outlined">
+                            </v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Length" v-model="item.length"
+                                type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Breadth" v-model="item.breadth"
+                                type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Height" v-model="item.height"
+                                type="number" @change="calculate_volume()"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Volume" v-model="item.volume"
+                                type="number" readonly></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field variant="outlined" density="compact" label="Remarks"
+                                v-model="item.remarks"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-card-actions>
+                <v-btn variant="outlined" v-if="index > 0" @click="remove_items_array(index)">Remove</v-btn>
+                <v-btn variant="outlined" @click="append_items_array()">Add More</v-btn>
+            </v-card-actions>
+        </v-card>
+        <v-btn class="mr-2" variant="outlined" @click="reset_form()">Reset</v-btn>
+        <v-btn color="primary" :loading="enquiry.loading" @click="enquiry.fetch()">Submit</v-btn>
+    </v-container>  
+    
+<v-dialog v-model="show_login_error" max-width="500">
+    <v-card>
+        <v-card-title>{{login_error_title}}</v-card-title>
+        <v-card-text>{{ login_error_message }}</v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="show_login_error = false">Close</v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
 
-            <div class="border border-gray-400">
-                <div class="flex">
-                    <div class="p-2 w-1/2 ">
-                        <label class="block text-xs text-gray-900 pb-1">Service Request</label>
-                        <Autocomplete :options=masters.data.service_requests v-model="shipment.service_request"
-                            placeholder="Service Request" @blur="validate_input($event, 'service_request', 'text')" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="m-1">&nbsp;</div>
-
-
-            <div class="p-2 bg-gray-900 text-white"><b>Nature of Shipment</b></div>
-
-            <div class="border border-gray-400">
-                <div class="flex">
-                    <div class="p-2 w-full ">
-                        <label class="block text-xs text-gray-900 pb-1">Nature of Shipment</label>
-                        <Autocomplete :options=masters.data.nature_of_shipments v-model="shipment.nature_of_shipment"
-                            placeholder="Nature of Shipment"
-                            @blur="validate_input($event, 'nature_of_shipment', 'text')" />
-                    </div>
-                    <div class="p-2 w-full ">
-                        <label class="block text-xs text-gray-900 pb-1">Mode of Transport</label>
-                        <Autocomplete :options=masters.data.mode_of_transports v-model="shipment.mode_of_transport"
-                            placeholder="Mode of Transport"
-                            @blur="validate_input($event, 'mode_of_transport', 'text')" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="m-1">&nbsp;</div>
-
-            <div class="p-2 bg-gray-900 text-white"><b>Shipping Info</b></div>
-
-            <div class="border border-gray-400">
-                <div class="flex" v-if="shipment.service_request.value !== '3'">
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">Place of Receipt</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Place of Receipt" :disabled="false" label="Place of Receipt"
-                            v-model="shipment.place_of_receipt"
-                            @blur="validate_input($event, 'place_of_receipt', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.place_of_receipt.$error" message="Please enter correct value"/> -->
-                    </div>
-
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">Incoterms</label>
-                        <Autocomplete :options=masters.data.incoterms v-model="shipment.incoterm"
-                            placeholder="Incoterms" @blur="validate_input($event, 'incoterm', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-40">&nbsp;</div>
-                </div>
-
-                <div v-if="shipment.mode_of_transport.value.includes('Sea') && (shipment.service_request.value == '1' || shipment.service_request.value == '2')">
-                    <div class="flex flex-row" v-for="(item, index) in shipment.ports">
-                        <div class="p-2 w-full">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Port of Loading</label>
-                            <Autocomplete :options=masters.data.ports v-model="item.port_of_loading"
-                                placeholder="Port of Loading" />
-                        </div>
-                        <div class="p-2 w-full">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Port of Discharge</label>
-                            <Autocomplete :options=masters.data.ports v-model="item.port_of_discharge"
-                                placeholder="Port of Discharge" />
-                        </div>
-                        <div class="p-2 w-40">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">&nbsp;</label>
-                            <Button class="mr-2" @click="append_ports_array()" :variant="'solid'" theme="gray" size="sm"
-                                label="Button" :loading="false" :loadingText="null" :disabled="false" :link="null">
-                                +
-                            </Button>
-                            <Button style="border: 1px solid red !important; color: red !important" v-if="index > 0"
-                                @click="remove_ports_array(index)" :variant="'solid'" theme="red" size="sm"
-                                label="Button" :loading="false" :loadingText="null" :disabled="false" :link="null">
-                                -
-                            </Button>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div
-                    v-if="shipment.mode_of_transport.value == 'Air' && (shipment.service_request.value == '1' || shipment.service_request.value == '2')">
-                    <div class="flex flex-row" v-for="(item, index) in shipment.airports">
-                        <div class="p-2 w-full">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Airport of Loading</label>
-                            <Autocomplete :options=masters.data.airports v-model="item.port_of_loading"
-                                placeholder="Airport of Loading" />
-                        </div>
-                        <div class="p-2 w-full">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Airport of
-                                Discharge</label>
-                            <Autocomplete :options=masters.data.airports v-model="item.port_of_discharge"
-                                placeholder="Airport of Discharge" />
-                        </div>
-                        <div class="p-2 w-40">
-                            <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">&nbsp;</label>
-                            <Button class="mr-2" @click="append_airports_array()" :variant="'solid'" theme="gray"
-                                size="sm" label="Button" :loading="false" :loadingText="null" :disabled="false"
-                                :link="null">
-                                +
-                            </Button>
-                            <Button style="border: 1px solid red !important; color: red !important" v-if="index > 0"
-                                @click="remove_airports_array(index)" :variant="'solid'" theme="red" size="sm"
-                                label="Button" :loading="false" :loadingText="null" :disabled="false" :link="null">
-                                -
-                            </Button>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- <div class="flex border-t">
-                    <div class="p-2 w-1/4"
-                        v-if="shipment.incoterm.value.includes('EXW') || shipment.incoterm.value.includes('CIF')">
-                        <label class="block text-xs text-gray-900 pb-1">Shipper Location</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Shipper Location" :disabled="false" label="Shipper Location"
-                            v-model="shipment.shipper_location" />
-                    </div>
-
-                    <div class="p-2 w-1/4"
-                        v-if="shipment.incoterm.value.includes('DDU') || shipment.incoterm.value.includes('DDP')">
-                        <label class="block text-xs text-gray-900 pb-1">Consignee Location</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Consignee Location" :disabled="false" label="Consignee Location"
-                            v-model="shipment.consignee_location" />
-                    </div>
-
-                </div> -->
-                <div class="flex" v-if="shipment.incoterm.value.includes('DDU') || shipment.incoterm.value.includes('DDP') || shipment.incoterm.value.includes('DAP') || shipment.incoterm.value.includes('DPU') || shipment.incoterm.value.includes('CIF') || shipment.incoterm.value.includes('EXW')">    
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup Location</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Shipper" :disabled="false" label="Shipper Location"
-                            v-model="shipment.pickup_location" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup Zip Code</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Zip Code" :disabled="false" label="Zip Code"
-                            v-model="shipment.pickup_zipcode" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup Address</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Full Address" :disabled="false" label="Pickup Address"
-                            v-model="shipment.pickup_address" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup Contact</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Contact" :disabled="false" label="Pickup Contact"
-                            v-model="shipment.pickup_contact" />
-                    </div>
-
-                </div>
-                <div class="flex border-t" v-if="shipment.nature_of_shipment.value =='Export'">
-                    <div class="p-2 w-1/4"
-                        v-if="(shipment.service_request.value == '3' && shipment.mode_of_transport.value.includes('Air'))">
-                        <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Delivery Airport</label>
-                        <Autocomplete :options=masters.data.domestic_airports v-model="shipment.delivery_airport"
-                            placeholder="Delivery Airport" />
-                    </div>
-                    <div class="p-2 w-1/4"
-                        v-if="(shipment.service_request.value == '3' && shipment.mode_of_transport.value.includes('Sea'))">
-                        <label v-if="index == 0" class="block text-xs text-gray-900 pb-1">Delivery CFS</label>
-                        <Autocomplete :options=masters.data.container_freight_stations v-model="shipment.delivery_cfs"
-                            placeholder="Delivery CFS" />
-                    </div>
-                </div>
-
-
-                <div class="flex border-t" v-if="shipment.nature_of_shipment.value =='Import'">
-                    <div class="p-2 w-1/4"
-                        v-if="shipment.mode_of_transport.value.includes('Air')">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup Airport</label>
-                        <Autocomplete :options=masters.data.domestic_airports v-model="shipment.pickup_airport"
-                            placeholder="Pickup Airport" />
-                    </div>
-                    <div class="p-2 w-1/4"
-                        v-if="shipment.mode_of_transport.value.includes('Sea')">
-                        <label class="block text-xs text-gray-900 pb-1">Pickup CFS</label>
-                        <Autocomplete :options=masters.data.container_freight_stations v-model="shipment.pickup_cfs"
-                            placeholder="Pickup CFS" />
-                    </div>
-                </div>
-
-                
-                <div class="flex" v-if="shipment.incoterm.value.includes('DDU') || shipment.incoterm.value.includes('DDP') || shipment.incoterm.value.includes('DAP') || shipment.incoterm.value.includes('DPU')">
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Delivery Location</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Consignee" :disabled="false" label="Delivery Location"
-                            v-model="shipment.delivery_location" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Delivery Zip Code</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Zip Code" :disabled="false" label="Delivery Zip Code"
-                            v-model="shipment.delivery_zipcode" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Delivery Address</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Full Address" :disabled="false" label="Delivery Address"
-                            v-model="shipment.delivery_address" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Delivery Contact</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Contact" :disabled="false" label="Delivery Contact"
-                            v-model="shipment.delivery_contact" />
-                    </div>
-                </div>
-
-
-                <div class="flex" v-if="shipment.incoterm.value.includes('DDU') || shipment.incoterm.value.includes('DDP')">
-                    <div class="p-2 w-32">
-                        <label class="block text-xs text-gray-900 pb-1">Currency</label>
-                        <Select :options="masters.data.currencies" v-model="shipment.invoice_currency"
-                            placeholder="Currency"></Select>
-                        <!-- <ErrorMessage class="pt-1.5" v-if="v$.invoice_value.$error" message="Invalid Input"/> -->
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Invoice Value</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Invoice Value" v-model="shipment.invoice_value"
-                            @blur="validate_input($event, 'invoice_value', 'number')" />
-                        <!-- <ErrorMessage class="pt-1.5" v-if="v$.invoice_value.$error" message="Invalid Input"/> -->
-                    </div>
-
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">HS Code</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="HS Code" :disabled="false" label="HS Code" v-model="shipment.hs_code"
-                            @blur="validate_input($event, 'hs_code', 'text')" />
-                        <ErrorMessage class="pt-1.5" v-if="v$.hs_code.$error" message="Invalid Input" />
-                    </div>
-                </div>
-
-                <div class="flex" v-if="shipment.service_request.value == '2'">
-
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">{{shipment.nature_of_shipment.value == 'Export'
-                            ? 'Shipper Category': 'Consignee Category'}}</label>
-                        <Autocomplete :options=masters.data.shipper_categories v-model="shipment.shipper_category"
-                            placeholder="" @blur="validate_input($event, 'shipper_category', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-1/4" v-if="shipment.nature_of_shipment.value == 'Export'">
-                        <label class="block text-xs text-gray-900 pb-1">AD Code</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="AD Code" :disabled="false" label="AD Code" v-model="shipment.ad_code"
-                            @blur="validate_input($event, 'ad_code', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.place_of_receipt.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-1/4" v-if="shipment.nature_of_shipment.value == 'Import'">
-                        <label class="block text-xs text-gray-900 pb-1">Type of Clearance</label>
-                        <Autocomplete :options=masters.data.types_of_clearance v-model="shipment.type_of_clearance"
-                            placeholder="" @blur="validate_input($event, 'type_of_clearance', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.place_of_receipt.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-1/4" v-if="shipment.nature_of_shipment.value == 'Import'">
-                        <label
-                            class="block text-xs text-gray-900 pb-1">{{get_carrier_caption(shipment.mode_of_transport.value)}}</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle" placeholder=""
-                            :disabled="false" label="Carrier Name" v-model="shipment.carrier_name"
-                            @blur="validate_input($event, 'carrier_name', 'text')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.place_of_receipt.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-40">&nbsp;</div>
-                </div>
-                <div class="flex"
-                    v-if="shipment.service_request.value == '2' && shipment.nature_of_shipment.value == 'Import'">
-
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Carrier Departure Date</label>
-                        <TextInput class="border-gray-800" :type="'date'" size="sm" variant="subtle" placeholder=""
-                            :disabled="false" label="Carrier Departures Date" v-model="shipment.carrier_departure_date"
-                            @blur="validate_input($event, 'carrier_departure_date', 'date')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/> -->
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Carrier Arrival Date</label>
-                        <TextInput class="border-gray-800" :type="'date'" size="sm" variant="subtle" placeholder=""
-                            :disabled="false" label="Carrier Arrival Date" v-model="shipment.carrier_arrival_date"
-                            @blur="validate_input($event, 'carrier_arrival_date', 'date')" />
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/> -->
-                    </div>
-
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Delivery Type</label>
-                        <Select :options=deliery_type_list v-model="shipment.delivery_type"
-                            placeholder="Delivery Type"></Select>
-                        <!-- <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/> -->
-                    </div>
-
-                    <div class="p-2 w-40">&nbsp;</div>
-                </div>
-
-
-                <div class="flex" v-if="shipment.service_request.value == '2'">
-
-                    <!-- <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">Invoice/Packing List</label>
-                        <FileUploader :fileTypes="['image/*']" :validateFile="(fileObject) => {}"
-                            @success="(file) => {}">
-                            <template
-                                #default="{ file, uploading, progress, uploaded, message, error, total, success, openFileSelector }">
-                                <Button>
-                                    Attach {{ progress }}%
-                                </Button>
-                            </template>
-                        </FileUploader>
-                        <ErrorMessage class="pt-0.5" v-if="v$.incoterm.$error" message="Please enter correct value"/>
-                    </div>
-                    <div class="p-2 w-full ">
-                        <label class="block text-xs text-gray-900 pb-1">{{ shipment.nature_of_shipment.value ==
-                            'Import'? 'BL Copy' : 'Old Shipping Bill Copy'}}</label>
-                        <FileUploader :fileTypes="['image/*']" :validateFile="(fileObject) => {}"
-                            @success="(file) => {}">
-                            <template
-                                #default="{ file, uploading, progress, uploaded, message, error, total, success, openFileSelector }">
-                                <Button>
-                                    Attach {{ progress }}%
-                                </Button>
-                            </template>
-                        </FileUploader>
-                        <ErrorMessage class="pt-0.5" v-if="v$.place_of_receipt.$error" message="Please enter correct value"/> 
-                    </div>-->
-                    <div class="p-2 w-40">&nbsp;</div>
-                </div>
-            </div>
-
-            <div class="m-1">&nbsp;</div>
-            <div v-for="(item, index) in line_items" class="flex flex-col mb-5 border border-gray-400">
-                <div class="flex flex-row p-2 justify-between border-b bg-gray-900 text-white">
-                    <div>
-                        <label class="block text-white pb-1 items-start" style="color: white !important"><b>Cargo
-                                Details - {{ index + 1 }}</b></label>
-                    </div>
-                </div>
-
-
-                <div class="flex flex-row">
-                    <div class="p-2 w-1/2">
-                        <label class="block text-xs text-gray-900 pb-1">Commodity</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Commodity" :disabled="false" label="Commodity" v-model="item.commodity" />
-                    </div>
-                    <div class="p-2 w-1/2">
-                        <label class="block text-xs text-gray-900 pb-1">Cargo Type</label>
-                        <Select :options=cargo_type_list v-model="item.cargo_type" placeholder="Cargo Type"></Select>
-                    </div>
-                </div>
-                <div v-if="item.cargo_type == 'DG'" v-for="(item, dg_index) in item.cargo_dg_array" class="flex">
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">IMO Classification</label>
-                        <TextInput class="border-gray-800" type="text" size="sm" variant="subtle"
-                            placeholder="IMO Classification" :disabled="false" label="IMO Classification"
-                            v-model="item.imo_classification" />
-                    </div>
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">UN Number</label>
-                        <TextInput class="border-gray-800" type="text" size="sm" variant="subtle"
-                            placeholder="UN Number" :disabled="false" label="UN Number" v-model="item.un_number" />
-                    </div>
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">&nbsp;</label>
-                        <Button class="mr-2" @click="append_cargo_dg_array(index)" :variant="'solid'" theme="gray"
-                            size="sm" label="Button" :loading="false" :loadingText="null" :disabled="false"
-                            :link="null">
-                            +
-                        </Button>
-                        <Button style="border: 1px solid red !important; color: red !important" v-if="dg_index > 0"
-                            @click="remove_cargo_dg_array(index, dg_index)" :variant="'solid'" theme="red" size="sm"
-                            label="Button" :loading="false" :loadingText="null" :disabled="false" :link="null">
-                            -
-                        </Button>
-
-                    </div>
-                </div>
-                <div v-if="item.cargo_type == 'Reefer'">
-                    <div class="p-2 w-1/2">
-                        <label class="block text-xs text-gray-900 pb-1">Coolant Type</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Coolant Type" :disabled="false" label="Coolant Type"
-                            v-model="item.coolant_type" />
-                    </div>
-                </div>
-
-                <div class="flex flex-row">
-
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">No of Packages</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="No of Packages" v-model="item.no_of_packages"
-                            @change="calculate_volume()" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Packing Type</label>
-                        <Autocomplete :options=masters.data.packing_types v-model="item.packing_type"
-                            placeholder="Packing Type" />
-                    </div>
-                </div>
-
-
-                <div class="flex flex-row">
-
-                    <div class="p-2 w-1/4" v-if="shipment.mode_of_transport.value.includes('Sea FCL')">
-                        <label class="block text-xs text-gray-900 pb-1">No of Containers</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle" placeholder="0"
-                            :disabled="false" label="No of Containers" v-model="item.no_of_containers"
-                            @change="calculate_volume()" />
-                    </div>
-
-                    <div class="p-2 w-1/4" v-if="shipment.mode_of_transport.value === 'Sea FCL'">
-                        <label class="block text-xs text-gray-900 pb-1">Container Type</label>
-                        <Autocomplete :options=masters.data.container_types v-model="item.container_type"
-                            placeholder="Container Type" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Gross Weight</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Gross Weight" v-model="item.gross_weight"
-                            @change="calculate_volume()" />
-                    </div>
-                    <div class="p-2 w-1/4">
-                        <label class="block text-xs text-gray-900 pb-1">Net Weight</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Net Weight" v-model="item.net_weight"
-                            @change="calculate_volume()" />
-                    </div>
-
-                </div>
-                <div class="flex flex-row">
-
-                    <div class="p-2 w-1/2">
-                        <label class="block text-xs text-gray-900 pb-1">Dimensions In</label>
-                        <Select :options=dimensions_in_list v-model="item.dimensions_in" @change="calculate_volume()"
-                            placeholder="Dimensions In" ></Select>
-                    </div>
-                    <div class="p-2 w-40">
-                        <label class="block text-xs text-gray-900 pb-1">Length</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Length" v-model="item.length"
-                            @change="calculate_volume()" />
-                    </div>
-                    <div class="p-2 w-40">
-                        <label class="block text-xs text-gray-900 pb-1">Breadth</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Breadth" v-model="item.breadth"
-                            @change="calculate_volume()" />
-                    </div>
-                    <div class="p-2 w-40">
-                        <label class="block text-xs text-gray-900 pb-1">Height</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="false" label="Height" v-model="item.height"
-                            @change="calculate_volume()" />
-                    </div>
-                    <div class="p-2 w-40">
-                        <label class="block text-xs text-gray-900 pb-1">Volume</label>
-                        <TextInput class="border-gray-800" :type="'number'" size="sm" variant="subtle"
-                            placeholder="0.00" :disabled="true" label="Volume" v-model="item.volume" />
-                    </div>
-
-                </div>
-                <div class="flex flex-row p-2 border-t justify-between">
-                    <div class="w-1/2">
-                        <label class="block text-xs text-gray-900 pb-1">Remarks</label>
-                        <TextInput class="border-gray-800" :type="'textarea'" size="sm" variant="subtle"
-                            placeholder="Remarks" :disabled="false" label="Remarks" v-model="item.remarks" />
-                    </div>
-                    <div>
-                        <Button style="border: 1px solid red !important; color: red !important" class="mr-2"
-                            v-if="index > 0" @click="remove_items_array(index)" :variant="'solid'" theme="red" size="sm"
-                            label="Button" :loading="false" :loadingText="null" :disabled="false" :link="null">
-                            Remove
-                        </Button>
-                        <Button @click="append_items_array()" :variant="'solid'" theme="gray" size="sm" label="Button"
-                            :loading="false" :loadingText="null" :disabled="false" :link="null">
-                            Add More
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div>
-            <div class="p-2 bg-gray-900 text-white w-full"><b>Company Info</b></div>
-
-            <div class="border border-gray-400">
-                <div class="flex">
-                    <div class="p-2 w-full">
-                        <label class="block text-xs text-gray-900 pb-1">Organization Name</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Organization Name" :disabled="false" label="Organization Name"
-                            v-model="company_info.organization_name" />
-                    </div>
-                    <div class="p-2">
-                        <label class="block text-xs text-gray-900 pb-1">Full Name</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Full Name" :disabled="false" label="Full Name"
-                            v-model="company_info.full_name" />
-                    </div>
-                    <div class="p-2">
-                        <label class="block text-xs text-gray-900 pb-1">Job Title</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle"
-                            placeholder="Job Title" :disabled="false" label="Job Title"
-                            v-model="company_info.job_title" />
-                    </div>
-                </div>
-                <div class="flex">
-
-                    <div class="p-2 ">
-                        <label class="block text-xs text-gray-900 pb-1">Mobile No</label>
-                        <TextInput class="border-gray-800" :type="'phone'" size="sm" variant="subtle"
-                            placeholder="Mobile No" :disabled="false" label="Mobile No"
-                            v-model="company_info.mobile_no" />
-                    </div>
-                    <div class="p-2 ">
-                        <label class="block text-xs text-gray-900 pb-1">Whatsapp No</label>
-                        <TextInput class="border-gray-800" :type="'phone'" size="sm" variant="subtle"
-                            placeholder="Whatsapp No" :disabled="false" label="Whatsapp No"
-                            v-model="company_info.whatsapp_no" />
-                    </div>
-                    <div class="p-2">
-                        <label class="block text-xs text-gray-900 pb-1">Email</label>
-                        <TextInput class="border-gray-800" :type="'email'" size="sm" variant="subtle"
-                            placeholder="Email" :disabled="false" label="Email" v-model="company_info.email" />
-                    </div>
-                </div>
-                <div class="flex">
-                    <div class="p-2">
-                        <label class="block text-xs text-gray-900 pb-1">City</label>
-                        <TextInput class="border-gray-800" :type="'text'" size="sm" variant="subtle" placeholder="City"
-                            :disabled="false" label="City" v-model="company_info.city" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Part -->
-        <div class="flex p-2 fixed bottom-0 left-0 right-0 border-t border-t-gray-600 justify-center bg-white">
-            <div class="mr-10">
-                <Button :variant="'subtle'" theme="gray" size="sm" label="Button" :loading="false" :loadingText="null"
-                    :disabled="false" :link="null" @click="reset_form()">
-                    Reset
-                </Button>
-            </div>
-            <div>
-                <Button :variant="'solid'" theme="gray" size="sm" label="Button" :loading="enquiry.loading" loadingText="Creating Enquiry"
-                    :disabled="false" :link="null" @click="enquiry.fetch()">
-                    Submit
-                </Button>
-            </div>
-        </div>
-    </div>
+    
     <div>
         <!-- <Button @click="get_enquiry('1cb9e438f8')">get_enquiry</Button> -->
-        <pre>{{shipment}}</pre>
-        <pre>{{line_items}}</pre>
-        &nbsp;
-        <br><br><br>
+        <!-- <pre>{{shipment}}</pre> -->
+        <!-- <pre>{{line_items}}</pre> -->
     </div>
 </template>
 
@@ -610,20 +335,13 @@ import { ref, computed, toRaw, watch } from 'vue'
 import { Dialog } from 'frappe-ui'
 import { session } from '../data/session'
 import {
-    createResource,
-    Autocomplete,
-    Select,
-    TextInput,
-    Button,
-    Switch,
-    ErrorMessage,
-    createDocumentResource,
-    FileUploader,
-    FileUploadHandler
+    createResource
 } from 'frappe-ui'
 
-import { useVuelidate } from '@vuelidate/core'
-import { required, email, numeric } from '@vuelidate/validators'
+const login_error_title = ref('')
+const login_error_message = ref('')
+const show_login_error = ref(false)
+
 
 import { useRouter, useRoute } from 'vue-router'
 
@@ -636,11 +354,11 @@ const deliery_type_list = ref([{ "value": "Cargo Delivery", "label": "Cargo Deli
 
 const shipment = ref(
     {
-        "service_request": {value: "", name: ""},
-        "nature_of_shipment": {"value": "", "name": ""},
-        "mode_of_transport": {"value": "", "name": ""},
+        "service_request": "",
+        "nature_of_shipment": "",
+        "mode_of_transport": "",
         "place_of_receipt": "",
-        "incoterm": {"value": "", "name": ""},
+        "incoterm": "",
         "ports": [
             { "port_of_loading": "", "port_of_discharge": "" }
         ],
@@ -653,10 +371,10 @@ const shipment = ref(
         "pickup_zipcode": "",
         "pickup_address": "",
         "pickup_contact": "",
-        "pickup_airport": {"value": "", "name": ""},
-        "pickup_cfs": {"value": "", "name": ""},
-        "delivery_airport": {"value": "", "name": ""},
-        "delivery_cfs": {"value": "", "name": ""},
+        "pickup_airport": "",
+        "pickup_cfs": "",
+        "delivery_airport": "",
+        "delivery_cfs": "",
         "delivery_location": "",
         "delivery_zipcode":"",
         "delivery_address": "",
@@ -669,22 +387,6 @@ const shipment = ref(
     }
 )
 
-const shipment_rules= computed(() => {
-    return {
-        "nature_of_shipment": {required},
-        "mode_of_transport": {required},
-        "place_of_receipt": {required},
-        "incoterm": {required},
-        "shipper_location": {required},
-        "consignee_location": {required},
-        "pickup_location": {required},
-        "delivery_location": {required},
-        "invoice_value": {required},
-        "hs_code": {required}
-    }
-})
-
-const v$ = useVuelidate(shipment_rules, shipment)
 
 const line_items = ref(
     [
@@ -720,6 +422,7 @@ const company_info = ref({
     "city": '',
     "job_title": '',
 })
+
 
 watch(() => route.params.id, get_enquiry, { immediate: true })
 
@@ -1012,51 +715,19 @@ let enquiry = createResource({
     onSuccess(data) {
 
         if (data.message.status == false) {
-            
-        } else {
+            login_error_title.value = 'Error'
+            login_error_message.value = 'Could not Create Enquiry'
+            show_login_error.value = true
 
-            router.push('/')
+        } else {
+            login_error_title.value = 'Success'
+            login_error_message.value = `Enquiry Reference No : ${data.message.message} Created`
+            show_login_error.value = true
+            // router.push('/')
         }
     }
 
 })
-        // enquiry.fetch()
-
-
-// async function submit_enquiry() {
-//     try {
-
-//         let enquiry = createResource({
-//             url: 'logistics.logistcs.api.submit_enquiry',
-//             params: raw 
-//         })
-//         enquiry.fetch()
-
-//         // fetch("http://localhost:8001/api/method/logistics.logistcs.api.submit_enquiry", requestOptions)
-//         //     .then((response) => {
-//         //         console.log('response', response)
-//         //         response.text()
-//         //     })
-//         //     .then((result) => console.log('result', result))
-//         //     .catch((error) => console.error('error', error));
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
-    // url: 'logistics.logistcs.api.submit_enquiry',
-    // method: 'POST',
-    // params: {
-    //     shipment: shipment,
-    //     line_items: line_items,
-    //     company_info: company_info
-    // }
-// })
-
-// let enquiry = createDocumentResource({
-//     'doctype': 'Enquiry',
-//     'nature_of_shipment': shipment.nature_of_shipment,
-//     'mode_of_transport': shipment.mode_of_transport
-// })
 
 function get_carrier_caption(mode_of_transport) {
     // console.log(mode_of_transport)
@@ -1079,49 +750,15 @@ const masters = createResource({
 })
 
 
+function get_port_of_loading(port) {
+    console.log(port)
+    x = createResource("logistics.logistcs.api.get_port_of_loading", {
+        params: port
+    })
+}
 
-
-const showDialog = ref(false)
 </script>
 
 <style>
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    /* border: 1px solid black !important */
-}
-
-input[type=number] {
-    -moz-appearance: textfield;
-    text-align: right;
-}
-
-input {
-    border: 1px solid rgb(84, 84, 84) !important;
-    border-radius: 0 !important;
-    background-color: white !important;
-    color: rgb(69, 69, 69) !important;
-}
-
-button {
-    border: 1px solid rgb(84, 84, 84) !important;
-    border-radius: 0 !important;
-    background-color: white !important;
-    color: rgb(69, 69, 69) !important;
-}
-
-select {
-    border: 1px solid rgb(84, 84, 84) !important;
-    border-radius: 0 !important;
-    background-color: white !important;
-    color: rgb(69, 69, 69) !important;
-}
-textarea {
-    /* border: 0.5px solid rgb(145, 145, 145) !important; */
-    border-radius: 0 !important;
-    background-color: white !important;
-    color: rgb(69, 69, 69) !important;
-}
 
 </style>
