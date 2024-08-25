@@ -455,7 +455,7 @@
     <div>
         <!-- <Button @click="get_enquiry('qvfs4a2ec0')">get_enquiry</Button> -->
         <!-- <pre>{{ valid }}</pre> -->
-        <pre>{{ shipment }}</pre>
+        <!-- <pre>{{ shipment }}</pre> -->
         <!-- <pre>{{line_items}}</pre> -->
     </div>
 </template>
