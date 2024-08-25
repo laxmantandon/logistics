@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:aol_and_aod",
+ "creation": "2024-05-10 16:51:24.426055",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "aol_and_aod",
+  "is_domestic"
+ ],
+ "fields": [
+  {
+   "fieldname": "aol_and_aod",
+   "fieldtype": "Data",
+   "label": "AOL and AOD",
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_domestic",
+   "fieldtype": "Check",
+   "label": "Is Domestic"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-25 13:11:29.453639",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "AOL and AOD",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

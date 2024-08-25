@@ -1,0 +1,26 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Service Request",
+  "modified": "2024-05-22 11:39:28.204829",
+  "name": "Freight Forwarding",
+  "service_code": "1",
+  "service_request": "Freight Forwarding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Service Request",
+  "modified": "2024-05-22 11:39:22.263639",
+  "name": "Customs Clearance",
+  "service_code": "2",
+  "service_request": "Customs Clearance"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Service Request",
+  "modified": "2024-05-22 11:39:17.808055",
+  "name": "Transportation",
+  "service_code": "3",
+  "service_request": "Transportation"
+ }
+]
