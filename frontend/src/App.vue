@@ -3,9 +3,9 @@
       <v-app-bar app v-if="session.isLoggedIn">
         <v-toolbar-title>Bliss</v-toolbar-title>
         <v-spacer></v-spacer>
-        <router-link to="/enquiry"><v-btn text>New Enquiry</v-btn></router-link>
-        <router-link to="/enquiry-list"><v-btn text>Enquiry List</v-btn></router-link>
-        <v-btn text :loading="session.logout.loading" @click="session.logout.submit()">Logout</v-btn>
+        <router-link to="/enquiry"><v-btn color="primary" prepend-icon="mdi-plus-circle">New</v-btn></router-link>
+        <router-link to="/enquiry-list"><v-btn color="secondry" prepend-icon="mdi-list-box" text>List</v-btn></router-link>
+        <v-btn text :loading="session.logout.loading" @click="session.logout.submit()"><v-icon name="mdi-logout">mdi-logout</v-icon></v-btn>
       </v-app-bar>
 
       <v-main>

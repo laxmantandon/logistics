@@ -245,6 +245,7 @@
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Posting Date"
   },
   {
@@ -274,6 +275,7 @@
   {
    "fieldname": "nature_of_shipment",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Nature of Shipment",
    "options": "\nImport\nExport"
   },
@@ -284,6 +286,7 @@
   {
    "fieldname": "mode_of_transport",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Mode of Transport",
    "options": "\nAir\nSea FCL\nSea LCL"
   },
@@ -320,6 +323,7 @@
   {
    "fieldname": "service_request",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Service Request",
    "options": "Service Request"
   },
@@ -409,7 +413,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-29 13:04:56.683840",
+ "modified": "2024-08-25 13:34:25.313276",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Enquiry",

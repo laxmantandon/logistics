@@ -1,0 +1,148 @@
+{
+ "charts": [
+  {
+   "chart_name": "Logistics Enquiry Trend",
+   "label": "Enquiry Trend"
+  }
+ ],
+ "content": "[{\"id\":\"LZh9flz8uO\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"hE5X555MlJ\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Enquiry Trend\",\"col\":6}},{\"id\":\"L_9ZYgESnt\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Recent Enquiries\",\"col\":6}},{\"id\":\"As3hikTZwi\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"RLu9LrG3OU\",\"type\":\"card\",\"data\":{\"card_name\":\"Transactions\",\"col\":4}}]",
+ "creation": "2024-05-27 10:45:00.657977",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "dashboard-list",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Logistics",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Masters",
+   "link_count": 8,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Ports",
+   "link_count": 0,
+   "link_to": "POL and POD",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Airports",
+   "link_count": 0,
+   "link_to": "AOL and AOD",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Container Freight Station",
+   "link_count": 0,
+   "link_to": "Container Freight Station",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Type of Clearance",
+   "link_count": 0,
+   "link_to": "Type of Clearance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Service Request",
+   "link_count": 0,
+   "link_to": "Service Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Packing Type",
+   "link_count": 0,
+   "link_to": "Packing Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Container Type",
+   "link_count": 0,
+   "link_to": "Container Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incoterm",
+   "link_count": 0,
+   "link_to": "Incoterm",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transactions",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Enquiry",
+   "link_count": 0,
+   "link_to": "Enquiry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-08-25 13:33:49.047963",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Logistics",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Enquiry",
+   "label": "Recent Enquiries",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [],
+ "title": "Logistics"
+}

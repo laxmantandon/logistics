@@ -70,13 +70,6 @@ def get_masters_data():
     }
 
 @frappe.whitelist()
-def get_port_of_loading(port):
-   ports = frappe.db.sql(f"""
-        SELECT name as value, name as label from `tabPOL and POD` WHERE name like '%{port}%' LIMIT 10
-    """, as_dict=True)
-
-
-@frappe.whitelist()
 def get_enquiry_list():
 
     enquiries = frappe.db.sql("""
@@ -109,17 +102,27 @@ def submit_enquiry():
     # return req
 
     # # for r in req.get("shipment").get("airports"):
-    enquiry = frappe.new_doc("Enquiry")
 
-    enquiry.service_request = req.get("shipment").get("service_request")
+    enquiry_name=req.get("shipment").get("name")
+
+    if enquiry_name:
+        enquiry = frappe.get_doc("Enquiry", enquiry_name)
+
+    else:
+        enquiry = frappe.new_doc("Enquiry")
+
+    service_request = frappe.db.get_all("Service Request", fields=["name", "service_code"], filters={"service_code": req.get("shipment").get("service_request")})
+    enquiry.service_request = service_request[0].name
     enquiry.nature_of_shipment = req.get("shipment").get("nature_of_shipment")
     enquiry.mode_of_transport = req.get("shipment").get("mode_of_transport")
 
     if enquiry.mode_of_transport == 'Sea FCL' or enquiry.mode_of_transport == 'Sea LCL':
+        enquiry.ports = []
         for s in req.get("shipment").get("ports"):
             enquiry.append("ports", {"port_of_loading": s.get("port_of_loading"), "port_of_discharge": s.get("port_of_discharge")})
 
     if enquiry.mode_of_transport == 'Air':
+        enquiry.airports = []
         for s in req.get("shipment").get("airports"):
             enquiry.append("airports", {"airport_of_loading": s.get("port_of_loading"), "airport_of_discharge": s.get("port_of_discharge")})
 
@@ -160,7 +163,7 @@ def submit_enquiry():
     enquiry.carrier_arrival_date = req.get("shipment").get("carrier_arrival_date")
     enquiry.ad_code = req.get("shipment").get("ad_code")
 
-
+    enquiry.items = []
     for i in req.get("line_items"):
         
         enquiry.append("items", {
@@ -192,7 +195,6 @@ def submit_enquiry():
     enquiry.job_title = req.get("company_info").get("job_title")
 
     try:
-        enquiry.flags.ignore_permissions = True
         enquiry.save()
         return {
             "status": True,

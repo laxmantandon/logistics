@@ -23,6 +23,11 @@ const routes = [
     name: 'EnquiryEdit',
     component: () => import('@/pages/Enquiry.vue'),
   },
+  {
+    path: '/enquiry/duplicate/:id',
+    name: 'EnquiryDuplicate',
+    component: () => import('@/pages/Enquiry.vue'),
+  },
 ]
 
 let router = createRouter({
@@ -37,8 +42,6 @@ router.beforeEach(async (to, from, next) => {
   } catch (error) {
     isLoggedIn = false
   }
-
-  console.log(`Navigating to: ${to.name}, isLoggedIn: ${isLoggedIn}`)
 
   if (to.name === 'Login' && isLoggedIn) {
     next({ name: 'EnquiryList' })

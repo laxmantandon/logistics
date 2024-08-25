@@ -48,13 +48,11 @@ const enquiry_list = createResource({
 })
 
 function edit_enquiry(row) {
-
     router.push(`/enquiry/${row.name}`)
-    console.log(row)
 }
 
-function duplicateItem(item) {
-    console.log(item)
+function duplicateItem(row) {
+    router.push(`/enquiry/duplicate/${row.name}`)
 }
 
 </script>
