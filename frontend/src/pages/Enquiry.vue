@@ -785,10 +785,9 @@ function append_airports_array() {
 
 
 function calculate_volume() {
-    console.log('dd')
-    this.line_items.forEach((item, index) => {
+    line_items.value.forEach((item, index) => {
         // console.log('item', item)
-        if (this.shipment.mode_of_transport == 'Air') {
+        if (shipment.value.mode_of_transport == 'Air') {
             if (item.dimensions_in == 'Inches (In)') {
                 let cal_inches = ((item.length * item.breadth * item.height) / 366) * item.no_of_packages;
                 item.volume = parseFloat(cal_inches).toFixed(3)
@@ -819,6 +818,40 @@ function calculate_volume() {
 
         }
     })
+
+    // this.line_items.forEach((item, index) => {
+    //     // console.log('item', item)
+    //     if (this.shipment.mode_of_transport == 'Air') {
+    //         if (item.dimensions_in == 'Inches (In)') {
+    //             let cal_inches = ((item.length * item.breadth * item.height) / 366) * item.no_of_packages;
+    //             item.volume = parseFloat(cal_inches).toFixed(3)
+    //         }
+
+    //         if (item.dimensions_in == 'Centimeters (cm)') {
+    //             let cal_cms = ((item.length * item.breadth * item.height) / 6000) * item.no_of_packages;
+    //             item.volume = parseFloat(cal_cms).toFixed(3)
+    //         }
+    //         if (item.dimensions_in == 'Milimeters (mm)') {
+    //             let cal_mm = ((item.length * item.breadth * item.height) / 6000) * item.no_of_packages * 0.1;
+    //             item.volume = parseFloat(cal_mm).toFixed(3)
+
+    //         }
+    //     } else {
+    //         if (item.dimensions_in == 'Inches (In)') {
+    //             let cal_inches = (((item.length * item.breadth * item.height) * 2.54) / 1000000) * item.no_of_packages;
+    //             item.volume = parseFloat(cal_inches).toFixed(3)
+    //         }
+    //         if (item.dimensions_in == 'Centimeters (cm)') {
+    //             let cal_cms = ((item.length * item.breadth * item.height) / 1000000) * item.no_of_packages;
+    //             item.volume = parseFloat(cal_cms).toFixed(3)
+    //         }
+    //         if (item.dimensions_in == 'Milimeters (mm)') {
+    //             let cal_mm = (((item.length * item.breadth * item.height) * 0.1) / 1000000) * item.no_of_packages;
+    //             item.volume = parseFloat(cal_mm).toFixed(3)
+    //         }
+
+    //     }
+    // })
 }
 
 function validate_input($event, field_name, field_type) {
