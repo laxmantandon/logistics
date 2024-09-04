@@ -102,22 +102,22 @@
                 <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU') || shipment.incoterm.includes('CIF') || shipment.incoterm.includes('EXW')">
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Pickup Location"
-                                    v-model="shipment.pickup_location" :rules="nameRules"></v-text-field>
+                                    v-model="shipment.pickup_location" ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Pickup Zip Code"
                                     v-model="shipment.pickup_zipcode"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Pickup Address"
                                     v-model="shipment.pickup_address"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Pickup Contact"
                                     v-model="shipment.pickup_contact"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -138,7 +138,7 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="shipment.nature_of_shipment =='Import'">
-                    <v-col cols="4" v-if="shipment.mode_of_transport.includes('Air')">
+                    <v-col cols="4" v-if="shipment.mode_of_transport.includes('Air') && (shipment.service_request == '2' || shipment.service_request == '3')">
                         <v-autocomplete label="Pickup Airport" density="compact"
                                     :items=masters.data.domestic_airports v-model="shipment.pickup_airport" item-title="label"
                                     item-value="value" variant="outlined"
@@ -149,7 +149,7 @@
                         <v-autocomplete label="Pickup CFS" density="compact"
                                     :items=masters.data.container_freight_stations v-model="shipment.pickup_cfs"
                                     item-title="label" item-value="value" variant="outlined"
-                                    :rules="nameRules">
+                                    >
                                 </v-autocomplete>
                     </v-col>
                 </v-row>
@@ -207,20 +207,20 @@
                     <v-col v-if="shipment.nature_of_shipment == 'Export'">
                         <v-text-field variant="outlined" density="compact" label="AD Code"
                                     v-model="shipment.ad_code"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col v-if="shipment.nature_of_shipment == 'Import'">
                         <v-autocomplete label="Type of Clearance" density="compact"
                                     :items=masters.data.types_of_clearance v-model="shipment.type_of_clearance"
                                     item-title="label" item-value="value" variant="outlined"
-                                    :rules="nameRules">
+                                    >
                                 </v-autocomplete>
                     </v-col>
                     <v-col v-if="shipment.nature_of_shipment == 'Import'">
                         <v-text-field variant="outlined" density="compact"
                                     :label="get_carrier_caption(shipment.mode_of_transport)"
                                     v-model="shipment.carrier_name"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row v-if="shipment.service_request == '2' && shipment.nature_of_shipment == 'Import'">
@@ -286,7 +286,7 @@
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="No of Packages" type="number"
                                     v-model="item.no_of_packages" @change="calculate_volume()"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-autocomplete label="Packing Type" density="compact"
@@ -326,28 +326,28 @@
                         <v-autocomplete label="Dimension In" density="compact" :items=dimensions_in_list
                                     v-model="item.dimensions_in" item-title="label" item-value="value"
                                     @change="calculate_volume()" variant="outlined"
-                                    :rules="nameRules">
+                                    >
                                 </v-autocomplete>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Length" v-model="item.length"
                                     type="number" @change="calculate_volume()"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Breadth" v-model="item.breadth"
                                     type="number" @change="calculate_volume()"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Height" v-model="item.height"
                                     type="number" @change="calculate_volume()"
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Volume" v-model="item.volume"
                                     type="number" readonly
-                                    :rules="nameRules"></v-text-field>
+                                    ></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -691,12 +691,12 @@ function get_enquiry(id) {
 
 
 function append_cargo_dg_array(index) {
-    this.line_items[index].cargo_dg_array.push({ "imo_classification": "", "un_number": "" })
+    line_items.value[index].cargo_dg_array.push({ "imo_classification": "", "un_number": "" })
     // this.line_items["cargo_dg_array"].push()
 }
 
 function remove_items_array(index) {
-    this.line_items.splice(index, 1)
+    line_items.value.splice(index, 1)
 }
 
 function reset_items_array() {
@@ -725,7 +725,7 @@ function reset_items_array() {
 }
 
 function append_items_array() {
-    this.line_items.push(
+    line_items.value.push(
         {
             "incoterm": "",
             "place_of_receipt": "",
@@ -753,7 +753,7 @@ function append_items_array() {
 
 function remove_cargo_dg_array(index, dg_index) {
     // console.log(index, dg_index)
-    this.line_items[index].cargo_dg_array.splice(dg_index, 1)
+    line_items.value[index].cargo_dg_array.splice(dg_index, 1)
 }
 
 function reset_cargo_dg_array() {
@@ -765,20 +765,20 @@ function reset_cargo_dg_array() {
 
 
 function remove_ports_array(index) {
-    this.shipment.ports.splice(index, 1)
+    shipment.value.ports.splice(index, 1)
 }
 
 function append_ports_array() {
-    this.shipment.ports.push(
+    shipment.value.ports.push(
         { "port_of_loading": "", "port_of_discharge": "" }
     )
 }
 function remove_airports_array(index) {
-    this.shipment.airports.splice(index, 1)
+    shipment.value.airports.splice(index, 1)
 }
 
 function append_airports_array() {
-    this.shipment.airports.push(
+    shipment.value.airports.push(
         { "port_of_loading": "", "port_of_discharge": "" }
     )
 }
@@ -854,17 +854,6 @@ function calculate_volume() {
     // })
 }
 
-function validate_input($event, field_name, field_type) {
-    this.v$[field_name].$touch()
-
-    if (field_type == 'number') {
-        this.shipment[field_name] = parseFloat($event.target.value).toFixed(3)
-    }
-
-    if (field_type == 'int') {
-        this.shipment[field_name] = parseInt($event.target.value)
-    }
-}
 
 function reset_form() {
 
