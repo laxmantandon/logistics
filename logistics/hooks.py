@@ -215,7 +215,8 @@ app_license = "MIT"
 # ]
 
 fixtures= [
-    {"dt": "Service Request"}
+    {"dt": "Service Request"},
+    {"dt": "Role", "filters": [["name", "=", "Enquiry User"]]},
 ]
 
 website_route_rules = [{'from_route': '/frontend/<path:app_path>', 'to_route': 'frontend'},]

@@ -226,15 +226,13 @@ def signup(email, full_name, new_password):
     email = email.strip().lower()
 
     if not frappe.db.exists("User", email):
-        user = frappe.get_doc(
-            {
-                "doctype": "User",
-                "email": email,
-                "first_name": full_name,
-                "new_password": new_password,
-                "send_welcome_email": "0"
-            }
-        ).insert()
+        user = frappe.new_doc("User")
+        user.email = email
+        user.first_name = full_name
+        user.new_password = new_password
+        user.send_welcome_email = 0
+        user.append("roles", {"role": "Enquiry User"})
+        user.insert()
 
         frappe.set_user(current_user)
         return {
