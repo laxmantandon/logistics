@@ -440,13 +440,13 @@
         </v-container>  
     </v-form>    
 
-    <v-dialog v-model="show_login_error" max-width="500">
+    <v-dialog persistent v-model="show_login_error" max-width="500">
         <v-card>
             <v-card-title>{{login_error_title}}</v-card-title>
             <v-card-text>{{ login_error_message }}</v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="show_login_error = false">Close</v-btn>
+                <v-btn color="primary" @click="close_dialog()">Close</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -880,11 +880,21 @@ let enquiry = createResource({
             login_error_title.value = 'Success'
             login_error_message.value = `Enquiry Reference No : ${data.message} Processed`
             show_login_error.value = true
-            // router.push('/')
+            shipment.value = ""
         }
     }
 
 })
+
+function close_dialog() {
+    if (login_error_title.value == 'Success') {
+        show_login_error.value = false
+        router.push('/')
+    } else {
+        show_login_error.value = false
+    }
+}
+
 
 function get_carrier_caption(mode_of_transport) {
     // console.log(mode_of_transport)
@@ -905,6 +915,7 @@ const masters = createResource({
     url: 'logistics.logistcs.api.get_masters_data',
     auto: true,
 })
+
 
 
 </script>
