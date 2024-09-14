@@ -74,16 +74,18 @@ def get_enquiry_list():
 
     enquiries = frappe.db.sql("""
     SELECT
-        name, service_request, nature_of_shipment, mode_of_transport, posting_date, posting_time
+        name, service_request, nature_of_shipment, mode_of_transport, posting_date, posting_time,
+        incoterm, organization_name
     FROM tabEnquiry WHERE owner = %s
     ORDER BY posting_date desc, posting_time desc
     """, (frappe.session.user), as_dict=True)
 
     headers = [
         { "title": "Ref #", "value": "name" },
-        { "title": "Service Request", "value": "service_request" },
         { "title": "Nature of Shipment", "value": "nature_of_shipment" },
         { "title": "Mode of Transport", "value": "mode_of_transport" },
+        { "title": "Organization", "value": "organization_name" },
+        { "title": "Incoterm", "value": "incoterm" },
         { "title": "Date", "value": "posting_date" },
         { "title": "Time", "value": "posting_time" },
         { "title": "Actions", "value": "actions" }
