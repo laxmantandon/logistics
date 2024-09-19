@@ -1,0 +1,208 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-09-17 19:14:35.583764",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enquiry",
+  "column_break_seuam",
+  "posting_date",
+  "section_break_cskvk",
+  "organization_name",
+  "column_break_axs7o",
+  "full_name",
+  "column_break_ontg7",
+  "job_title",
+  "section_break_numrs",
+  "mobile_no",
+  "column_break_kpj3e",
+  "whatsapp_no",
+  "column_break_mbrmq",
+  "email",
+  "column_break_iazb4",
+  "city",
+  "section_break_e5xek",
+  "service_request",
+  "column_break_6nsg4",
+  "nature_of_shipment",
+  "column_break_wl9ra",
+  "incoterms",
+  "column_break_5mbnv",
+  "mode_of_transport",
+  "section_break_udpa1",
+  "items",
+  "naming_series"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "enquiry",
+   "fieldtype": "Link",
+   "label": "Enquiry",
+   "options": "Enquiry"
+  },
+  {
+   "fetch_from": "enquiry.service_request",
+   "fieldname": "service_request",
+   "fieldtype": "Data",
+   "label": "Service Request"
+  },
+  {
+   "fetch_from": "enquiry.nature_of_shipment",
+   "fieldname": "nature_of_shipment",
+   "fieldtype": "Data",
+   "label": "Nature of Shipment"
+  },
+  {
+   "fetch_from": "enquiry.incoterm",
+   "fieldname": "incoterms",
+   "fieldtype": "Data",
+   "label": "Incoterms"
+  },
+  {
+   "fetch_from": "enquiry.mode_of_transport",
+   "fieldname": "mode_of_transport",
+   "fieldtype": "Data",
+   "label": "Mode of Transport"
+  },
+  {
+   "fieldname": "column_break_seuam",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cskvk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "enquiry.organization_name",
+   "fieldname": "organization_name",
+   "fieldtype": "Data",
+   "label": "Organization Name"
+  },
+  {
+   "fieldname": "column_break_axs7o",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "enquiry.full_name",
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name"
+  },
+  {
+   "fieldname": "column_break_ontg7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "enquiry.full_name",
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "label": "Job Title"
+  },
+  {
+   "fieldname": "section_break_numrs",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "enquiry.mobile_no",
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile No"
+  },
+  {
+   "fieldname": "column_break_kpj3e",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "enquiry.whatsapp_no",
+   "fieldname": "whatsapp_no",
+   "fieldtype": "Data",
+   "label": "Whatsapp No"
+  },
+  {
+   "fieldname": "column_break_mbrmq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "enquiry.email",
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "column_break_iazb4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "section_break_e5xek",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_6nsg4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wl9ra",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_5mbnv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_udpa1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "C-2425-.####"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Costing Item"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-09-17 19:25:32.040075",
+ "modified_by": "Administrator",
+ "module": "Logistcs",
+ "name": "Costing",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2024-05-13 11:20:33.027964",
  "default_view": "List",
  "doctype": "DocType",
@@ -74,7 +75,8 @@
   "section_break_gxmqj",
   "amended_from",
   "additional_info_tab",
-  "agent"
+  "agent",
+  "naming_series"
  ],
  "fields": [
   {
@@ -408,15 +410,27 @@
    "fieldtype": "Link",
    "label": "Invoice Currency",
    "options": "Currency"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "ENQ-2425-.#####"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2024-09-09 12:47:26.846852",
+ "links": [
+  {
+   "link_doctype": "Costing",
+   "link_fieldname": "enquiry"
+  }
+ ],
+ "modified": "2024-09-17 19:28:48.710287",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Enquiry",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
