@@ -42,30 +42,36 @@
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Posting Date"
   },
   {
    "fieldname": "enquiry",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Enquiry",
-   "options": "Enquiry"
+   "options": "Enquiry",
+   "reqd": 1
   },
   {
    "fetch_from": "enquiry.service_request",
    "fieldname": "service_request",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Service Request"
   },
   {
    "fetch_from": "enquiry.nature_of_shipment",
    "fieldname": "nature_of_shipment",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Nature of Shipment"
   },
   {
    "fetch_from": "enquiry.incoterm",
    "fieldname": "incoterms",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Incoterms"
   },
   {
@@ -86,6 +92,7 @@
    "fetch_from": "enquiry.organization_name",
    "fieldname": "organization_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Organization Name"
   },
   {
@@ -96,6 +103,7 @@
    "fetch_from": "enquiry.full_name",
    "fieldname": "full_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Full Name"
   },
   {
@@ -177,12 +185,13 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Costing Item"
+   "options": "Costing Item",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-17 19:25:32.040075",
+ "modified": "2024-09-19 11:48:01.553654",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Costing",
