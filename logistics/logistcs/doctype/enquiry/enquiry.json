@@ -87,6 +87,7 @@
   {
    "fieldname": "incoterm",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Incoterm",
    "options": "Incoterm"
   },
@@ -278,6 +279,7 @@
    "fieldname": "nature_of_shipment",
    "fieldtype": "Select",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Nature of Shipment",
    "options": "\nImport\nExport"
   },
@@ -289,6 +291,7 @@
    "fieldname": "mode_of_transport",
    "fieldtype": "Select",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Mode of Transport",
    "options": "\nAir\nSea FCL\nSea LCL"
   },
@@ -326,6 +329,7 @@
    "fieldname": "service_request",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Service Request",
    "options": "Service Request"
   },
@@ -430,7 +434,7 @@
    "link_fieldname": "custom_against_enquiry"
   }
  ],
- "modified": "2024-09-19 11:58:30.714346",
+ "modified": "2024-11-24 16:53:30.344088",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Enquiry",

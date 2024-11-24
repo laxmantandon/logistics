@@ -33,9 +33,16 @@
   "incoterms",
   "column_break_5mbnv",
   "mode_of_transport",
+  "section_break_bn4xm",
+  "ports",
+  "airports",
   "section_break_udpa1",
   "items",
-  "naming_series"
+  "naming_series",
+  "section_break_hjrmn",
+  "total_base_amount",
+  "column_break_cphpv",
+  "total_base_selling_amount"
  ],
  "fields": [
   {
@@ -187,11 +194,49 @@
    "label": "Items",
    "options": "Costing Item",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_bn4xm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport !== 'Air'",
+   "fieldname": "ports",
+   "fieldtype": "Table",
+   "label": "Ports",
+   "options": "Enquiry Ports"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport == 'Air'",
+   "fieldname": "airports",
+   "fieldtype": "Table",
+   "label": "Airports",
+   "options": "Enquiry Airports"
+  },
+  {
+   "fieldname": "section_break_hjrmn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_base_amount",
+   "fieldtype": "Currency",
+   "label": "Total Base Amount",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "column_break_cphpv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_base_selling_amount",
+   "fieldtype": "Currency",
+   "label": "Total Base Selling Amount",
+   "options": "Company:company:default_currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-19 11:48:01.553654",
+ "modified": "2024-11-24 17:49:24.715602",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Costing",

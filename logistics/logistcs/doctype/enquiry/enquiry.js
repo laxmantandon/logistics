@@ -2,6 +2,17 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Enquiry', {
+
+	onload: function(frm) {
+		$.each(frm.fields_dict, function(fieldname, field) {
+            frm.set_df_property(fieldname, 'read_only', 1);  // Set read_only to true for all fields
+        });
+
+		// if (frm.doc.docstatus == 0) {
+		// 	frm.set_intro(__(`<a href="/frontend/enquiry/${frm.doc.name}">Edit in Webform</a><br>`));
+		// }
+	},
+
 	refresh: function(frm) {
 		if (frm.doc.docstatus == 1) {
 			frm.add_custom_button('Costing', function() {
