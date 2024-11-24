@@ -18,7 +18,7 @@ frappe.ui.form.on('Enquiry', {
 
 		if (frm.doc.docstatus == 0) {
 			frm.add_custom_button('Edit in Webform', function() {
-				window.open(`/frontend/enquiry-list/${frm.doc.name}`)	
+				window.open(`/frontend/enquiry/${frm.doc.name}`)	
 			});
 		}
 

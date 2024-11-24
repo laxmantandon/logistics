@@ -466,7 +466,7 @@
         <!-- <pre>{{ valid }}</pre> -->
         <!-- <pre>{{ shipment }}</pre> -->
         <!-- <pre>{{line_items}}</pre> -->
-         <pre>{{shipment.incoterm}}</pre>
+         <!-- <pre>{{shipment.incoterm}}</pre> -->
     </div>
 </template>
 
