@@ -41,6 +41,15 @@
                                     :rules="nameRules" required></v-text-field>
                     </v-col>
                     <v-col>
+                        <!-- <v-autocomplete 
+                            label="Incoterms" 
+                            density="compact" 
+                            :items=masters.data.incoterms
+                            v-model="shipment.incoterm" 
+                            item-title="label" 
+                            item-value="value" 
+                            variant="outlined"
+                            :rules="nameRules"></v-autocomplete> -->
                         <v-autocomplete 
                             label="Incoterms" 
                             density="compact" 
@@ -52,7 +61,7 @@
                             :rules="nameRules"></v-autocomplete>
                     </v-col>
                 </v-row>
-                <v-row v-if="shipment.mode_of_transport.includes('Sea') && (shipment.service_request == '1' || shipment.service_request == '2')" v-for="(item, index) in shipment.ports">
+                <v-row v-if="(shipment.mode_of_transport && shipment.mode_of_transport.includes('Sea')) && (shipment.service_request == '1' || shipment.service_request == '2')" v-for="(item, index) in shipment.ports">
                     <v-col>
                         <v-autocomplete label="Port of Loading" density="compact"
                                         :items=masters.data.ports v-model="item.port_of_loading" item-title="label"
@@ -99,7 +108,7 @@
                     </v-col>
                 </v-row>
 
-                <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU') || shipment.incoterm.includes('CIF') || shipment.incoterm.includes('EXW')">
+                <v-row v-if="shipment.incoterm && (shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU') || shipment.incoterm.includes('CIF') || shipment.incoterm.includes('EXW'))">
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Pickup Location"
                                     v-model="shipment.pickup_location" ></v-text-field>
@@ -122,14 +131,14 @@
                 </v-row>
 
                 <v-row v-if="shipment.nature_of_shipment =='Export'">
-                    <v-col v-if="(shipment.service_request == '3' && shipment.mode_of_transport.includes('Air'))">
+                    <v-col v-if="(shipment.service_request == '3' && (shipment.mode_of_transport && shipment.mode_of_transport.includes('Air')))">
                         <v-autocomplete label="Delivery Airport" density="compact"
                                     :items=masters.data.domestic_airports v-model="shipment.delivery_airport" item-title="label"
                                     item-value="value" variant="outlined"
                                     :rules="nameRules">
                                 </v-autocomplete>
                     </v-col>
-                    <v-col v-if="(shipment.service_request == '3' && shipment.mode_of_transport.includes('Sea'))">
+                    <v-col v-if="(shipment.service_request == '3' && (shipment.mode_of_transport && shipment.mode_of_transport.includes('Sea')))">
                         <v-autocomplete label="Delivery CFS" density="compact"
                                     :items=masters.data.container_freight_stations v-model="shipment.delivery_cfs"
                                     item-title="label" item-value="value" variant="outlined"
@@ -138,14 +147,14 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="shipment.nature_of_shipment =='Import'">
-                    <v-col cols="4" v-if="shipment.mode_of_transport.includes('Air') && (shipment.service_request == '2' || shipment.service_request == '3')">
+                    <v-col cols="4" v-if="(shipment.mode_of_transport && shipment.mode_of_transport.includes('Air')) && (shipment.service_request == '2' || shipment.service_request == '3')">
                         <v-autocomplete label="Pickup Airport" density="compact"
                                     :items=masters.data.domestic_airports v-model="shipment.pickup_airport" item-title="label"
                                     item-value="value" variant="outlined"
                                     :rules="nameRules">
                                 </v-autocomplete>
                     </v-col>
-                    <v-col v-if="shipment.mode_of_transport.includes('Sea')">
+                    <v-col v-if="shipment.mode_of_transport && shipment.mode_of_transport.includes('Sea')">
                         <v-autocomplete label="Pickup CFS" density="compact"
                                     :items=masters.data.container_freight_stations v-model="shipment.pickup_cfs"
                                     item-title="label" item-value="value" variant="outlined"
@@ -153,7 +162,7 @@
                                 </v-autocomplete>
                     </v-col>
                 </v-row>
-                <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU')">
+                <v-row v-if="shipment.incoterm && (shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP') || shipment.incoterm.includes('DAP') || shipment.incoterm.includes('DPU'))">
                     <v-col>
                         <v-text-field variant="outlined" density="compact" label="Delivery Location"
                                     v-model="shipment.delivery_location"
@@ -175,7 +184,7 @@
                                     :rules="nameRules"></v-text-field>
                     </v-col>
                 </v-row>
-                <v-row v-if="shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP')">
+                <v-row v-if="shipment.incoterm && (shipment.incoterm.includes('DDU') || shipment.incoterm.includes('DDP'))">
                     <v-col>
                         <v-autocomplete label="Currency" density="compact" :items=masters.data.currencies
                                     v-model="shipment.invoice_currency" item-title="label" item-value="value"
@@ -298,7 +307,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col v-if="shipment.mode_of_transport.includes('Sea FCL')">
+                    <v-col v-if="shipment.mode_of_transport && shipment.mode_of_transport.includes('Sea FCL')">
                         <v-text-field variant="outlined" density="compact" label="No of Container"
                                     v-model="item.no_of_containers" type="number" @change="calculate_volume()"
                                     :rules="nameRules"></v-text-field>
@@ -457,6 +466,7 @@
         <!-- <pre>{{ valid }}</pre> -->
         <!-- <pre>{{ shipment }}</pre> -->
         <!-- <pre>{{line_items}}</pre> -->
+         <pre>{{shipment.incoterm}}</pre>
     </div>
 </template>
 
@@ -470,7 +480,6 @@ const valid = ref(false);
 const login_error_title = ref('')
 const login_error_message = ref('')
 const show_login_error = ref(false)
-
 
 const router = useRouter()
 const route = useRoute()

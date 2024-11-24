@@ -424,9 +424,13 @@
   {
    "link_doctype": "Costing",
    "link_fieldname": "enquiry"
+  },
+  {
+   "link_doctype": "Quotation",
+   "link_fieldname": "custom_against_enquiry"
   }
  ],
- "modified": "2024-09-17 19:28:48.710287",
+ "modified": "2024-09-19 11:58:30.714346",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Enquiry",
