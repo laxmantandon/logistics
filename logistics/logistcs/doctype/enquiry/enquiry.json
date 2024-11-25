@@ -434,7 +434,7 @@
    "link_fieldname": "custom_against_enquiry"
   }
  ],
- "modified": "2024-11-24 16:53:30.344088",
+ "modified": "2024-11-24 18:13:51.859598",
  "modified_by": "Administrator",
  "module": "Logistcs",
  "name": "Enquiry",
@@ -464,5 +464,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
